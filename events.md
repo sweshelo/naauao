@@ -142,6 +142,7 @@
 - 看板 (0x1F): +0x08 のメッセージを表示する。
 - 会話 (0x07〜0x09): +0x08〜+0x14 の 4 つを使う (推定: 状況ごとの台詞)。
 - メッセージ ID は通し番号で、ダンジョンの台詞は MessageField_JP.gsmb (0x1BDF〜0x21AF) など。本文は `docs/reference/events.md` に出す。
+- `docs/reference/events.md` の本文の先頭の Ď / ď / č などは種別コード (画面には出ない)、本文中の `&` + 1 文字はほかのメッセージの差し込み。`docs/analysis.md` の「本文に混ざる日本語でない文字」を参照。
 
 ## 7. 汎用スイッチ (MOD、`mod/build_code.py`)
 
