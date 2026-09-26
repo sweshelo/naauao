@@ -301,5 +301,5 @@
 - 区画 6 / 7 / 9 の全欄、EventObject の残りの欄、StaticEvent の形式、敵の出現範囲との関係。
 - 扉・門の正確な位置と向き (`FUN_001cb4d4` がタイルの mapParts の a / b 欄 (`FUN_002eefa0`) からずらす量を決める)。
 - mapParts の a, b 欄 (当たり判定?)、mapData の [2]〜[6]。
-- 地上・町のマップ (M, S, F 系) の残り (屋内の mapData 行は §3「タイルの見た目」で確定)。ワールドマップ (worldmapParts) は別の仕組み。
+- 地上・町のマップ (M, S, F 系) や、屋内タイルセットの違い。ワールドマップ (worldmapParts) は別の仕組み (docs/worldmap.md)。
 - マップのハッシュ関数。
