@@ -28,6 +28,7 @@ python tools/gsarc.py extracted/romfs extracted/romfs_unpacked
 - マップのデータ構造 (マップ DB、タイル、出入口、タイルセットとモデル): `docs/map.md`、ダンプ `tools/mapdump.py`
 - マップエディタ (ブラウザ、3D) の設計書: `docs/map-editor-design.md`
 - イベント・ギミックの仕組み (種類、状態、スクリプト、汎用スイッチ MOD): `docs/events.md`、一覧 `docs/reference/events.md`
+- スクリプト (種類 0x24) の行ごとのクラス・メッセージ・完了させる行: `docs/reference/scripts.md`。Panana のイベント一覧の作り方: `docs/event-list.md`
 - 出現する敵 (区画 6 → monsterGroup) と BGM (mapData → soundData → sound.bcsar): `docs/encounters.md`
 
 ## RomFS
