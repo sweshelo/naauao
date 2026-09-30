@@ -22,6 +22,7 @@ python tools/gsarc.py extracted/romfs extracted/romfs_unpacked
 - `docs/reference/monsters.md`: MonsterParameter (ビット詰め) を展開した一覧: 名前・Lv・HP・こうげき・ぼうぎょ・すばやさ・経験値・ゴールド・ドロップ・ワザ・耐性。名前は別アーカイブ 2713402F の MonsterDesign (+0x4C の行、+0 名前 / +4 説明)。実行時はマスター (*0x520448) の +0x94C が MonsterParameter、+0x914 が MonsterDesign
 - `docs/reference/actions.md`: 全アクション (ワザ・アイテム・モンスターの行動・セリフ) のカテゴリ・種別・範囲・属性・状態・量・メッセージ
 - `docs/reference/conditions.md`: 状態 94 件の名前・範囲・値
+- `docs/reference/equipment.md`: 装備 284 件の欄・☆・効果 (状態と値)。仕組みは `docs/item-effects.md`
 - 戦闘の仕組み (ボスの変身・セリフ・AI・ダメージ計算・状態): `docs/battle.md`
 - `docs/reference/maps.md`: 全 205 マップのタイル数・範囲・タイルセット・区画のサイズ
 - `docs/reference/treasures.md`: 全マップの宝箱の中身 (区画 4 → EventObject +0x08 → treasureGroup)。ダンジョン名は mapGroup +0x14 の u16 (`docs/map.md` §10)
@@ -72,11 +73,11 @@ python tools/gsarc.py extracted/romfs extracted/romfs_unpacked
 | 0x0C | u32 | 名前 メッセージID (MessageSystemCommon) |
 | 0x10-0x1C | u32×4 | 説明文 メッセージID ×4 |
 | 0x20 | u32 | リソースハッシュ (CGFX/bcres。例 DC3B6800 は 1D37838B 内) |
-| 0x24 | u32 | 道具 (大分類 1) ならアクションの行 (`FUN_002f6794`)。たねなどはほかの値 |
+| 0x24 | u32 | 道具 (大分類 1) ならアクションの行 (`FUN_002f6794`)。装備は s16 × 2 = 効果 1 / 2 の値 (`docs/item-effects.md`)。たねなどはほかの値 |
 | 0x28 | u16 | 並びの番号 (下記) |
 | 0x2A | u16 | 上限到達時の連鎖先アイテムID |
 | 0x2C | u8  | カテゴリ: 下位4bit=大分類 (1 道具 / 2 ゴールド / 3 装備 / 4 つりざお / 5 エサ)、上位4bit=小分類 |
-| 0x2D-0x2E | | 装備パラメータ等 (未解析) |
+| 0x2D-0x2E | u8 × 2 | 装備: 効果 1 / 2 の状態 (conditionData の ID、`FUN_0030a3d0`、`docs/item-effects.md`)。つりざお・エサ・たね・花などはほかの値 |
 | 0x2F | u8  | 最大所持数 (0 → 99) |
 
 装備の小分類: 0x03 首 / 0x13 腕 / 0x23 足 / 0x33 背中 / 0x43 服
@@ -309,7 +310,6 @@ cave は .text 末尾のゼロ領域 0x4BF01C〜0x4BFFFF (RX マップ内)。
 - gmsg.py: MessageBattle / MessageField 等でヘッダ解釈が合わない (別バリアント) → 要調査
 - メッセージ制御コード ([0001] ルビ等) の仕様
 - vendor.bin / treasureGroup.bin の形式
-- 装備パラメータ (0x2D-0x2E, 0x24) と効果の対応
 - 0x225680/0x225708 を含む関数は Ghidra が関数として認識していない
 
 ## ビルド・デプロイ
