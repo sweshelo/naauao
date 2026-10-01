@@ -1,6 +1,6 @@
 ---
 name: naauao-docs
-description: 3DS「電波人間のRPG2」(v1.1.0) の ROM 解析ドキュメント。マップ・ダンジョン・戦闘(ダメージ計算/状態/ボス変身/AI)・モンスター・アイテム・装備・ショップ・宝箱・イベント/ギミック/スクリプト・エンカウント/BGM・演出(actionData/effectData)・ワールドマップ・精霊ほこら・code.ips パッチ・MOD・Panana・マップエディタの実装や仕様確認に使う。Game data structures, RomFS/GS tables, battle formulas, event objects and MOD/patch design for the game; use when editing or reading these specs.
+description: 3DS「電波人間のRPG2」(v1.1.0) と「電波人間のRPG3」(oahu/) の ROM 解析ドキュメント。マップ・ダンジョン・戦闘(ダメージ計算/状態/ボス変身/AI)・モンスター・アイテム・装備・ショップ・宝箱・イベント/ギミック/スクリプト・エンカウント/BGM・演出(actionData/effectData)・ワールドマップ・精霊ほこら・code.ips パッチ・MOD・Panana・マップエディタの実装や仕様確認に使う。Game data structures, RomFS/GS tables, battle formulas, event objects and MOD/patch design for the game; use when editing or reading these specs.
 ---
 
 # naauao ドキュメント索引
@@ -28,6 +28,15 @@ description: 3DS「電波人間のRPG2」(v1.1.0) の ROM 解析ドキュメン�
 | イベント一覧の作り方 | event-list.md (137) | Panana でのイベント一覧: データだけで出せる範囲、0x24 の振り分けと ARM 実行器、クラスからメッセージ/完了行を拾う、出現条件(§4) |
 | 精霊ほこら | shrine.md (152) | さよなら/呼び戻し、記録構造、QR 個体、修正案(code.ips) |
 | マップエディタ設計 | map-editor-design.md (182) | ブラウザ実装、RomFS 処理、CGFX、マップデータ操作 |
+
+## RPG3 (oahu/)
+RPG3 (内部名 oahu、タイトル 00040000000EF000) の解析は `oahu/` にまとめる。ルートの各 md は RPG2 (kahara) 専用。
+
+| 話題 | ファイル | 内容 |
+|---|---|---|
+| ROM・全体 | oahu/analysis.md | ROM 情報、展開手順、Base + Update のマージ (`rom:` / `patch:`、patchList.bin、LayeredFS)、RomFS とアーカイブ (version 7)、master `21350000` のテーブル一覧、GMSG の ID 範囲、分かった欄、code.bin のアドレス、RPG2 との違い |
+| Panana 両対応 | oahu/panana-compat.md | 2 / 3 で共通の層と作り直す層、分け方の案、要検討の点 |
+| ツール | oahu/tools/*.py | ctr.py (CIA 展開・マージ)、gsarc.py、gsmb.py、armdis.py。ROM 本体はリポジトリに入れない |
 
 ## データ表（reference/）
 
