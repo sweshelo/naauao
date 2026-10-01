@@ -4,6 +4,7 @@
 usage:
   ctr.py info  <file.cia>                 # CIA/TMD/NCCH/ExHeader summary
   ctr.py extract <file.cia> <outdir>      # exheader.bin, exefs/*, romfs/ (code is decompressed)
+  ctr.py verify <file.cia>                # TMD content hashes, NCCH ExHeader/ExeFS/RomFS hashes, IVFC levels
   ctr.py merge <base.cia> <update.cia> <outdir>
       # what the game sees with the update installed: update exheader/exefs (code.bin),
       # base RomFS with every root file listed in the update's patchList.bin taken from the update
@@ -169,6 +170,40 @@ def extract(path, outdir):
             fp = os.path.join(outdir, 'romfs', p); os.makedirs(os.path.dirname(fp), exist_ok=True)
             open(fp, 'wb').write(c.read(o, s))
 
+def verify(path):
+    import hashlib
+    def sha(b): return hashlib.sha256(b).digest()
+    c = Cia(path); ok = True
+    def check(label, cond):
+        nonlocal ok
+        print(('ok   ' if cond else 'FAIL ') + label); ok &= bool(cond)
+    for ct in c.contents:
+        check(f'content {ct["index"]} sha256 = TMD', sha(c.read(ct['offset'], ct['size'])).hex() == ct['sha256'])
+        n = Ncch(c, ct['offset']); h = n.h
+        check(f'content {ct["index"]} NCCH size = TMD', n.content_size == ct['size'])
+        if n.exh_size: check('  exheader hash', sha(n.exheader()[:0x400]) == h[0x160:0x180])
+        if n.exefs[1]:
+            check('  exefs superblock hash', sha(n.read(n.exefs[0], u32(h, 0x1A8) * 0x200)) == h[0x1C0:0x1E0])
+            eh = n.read(n.exefs[0], 0x200)
+            for i, (k, (o, s)) in enumerate(n.exefs_files().items()):
+                check(f'  exefs {k} hash', sha(c.read(n.base + o, s)) == eh[0x200 - 0x20 * (i + 1):0x200 - 0x20 * i])
+        if n.romfs[1]:
+            ro = n.romfs[0]
+            check('  romfs superblock hash', sha(n.read(ro, u32(h, 0x1B8) * 0x200)) == h[0x1E0:0x200])
+            iv = n.read(ro, 0x60); msize = u32(iv, 8)
+            lv = [(u64(iv, 0x0C + i * 0x18), u64(iv, 0x14 + i * 0x18)) for i in range(3)]
+            l3 = ro + align(0x60 + msize, 0x1000)
+            l1 = align(l3 + lv[2][1], 0x1000); l2 = align(l1 + lv[0][1], 0x1000)
+            def level_ok(hashes, data_off, size):
+                for k in range(0, size, 0x1000):
+                    blk = n.read(data_off + k, min(0x1000, size - k)); blk += b'\0' * (0x1000 - len(blk))
+                    if sha(blk) != hashes[k // 0x1000 * 32:k // 0x1000 * 32 + 32]: return False
+                return True
+            check('  ivfc master -> L1', level_ok(n.read(ro + 0x60, msize), l1, lv[0][1]))
+            check('  ivfc L1 -> L2', level_ok(n.read(l1, lv[0][1]), l2, lv[1][1]))
+            check('  ivfc L2 -> L3', level_ok(n.read(l2, lv[1][1]), l3, lv[2][1]))
+    print('ALL OK' if ok else 'ERRORS')
+
 def merge(base, update, outdir):
     import shutil
     extract(update, os.path.join(outdir, '_update'))
@@ -191,5 +226,7 @@ if __name__ == '__main__':
         for p in sys.argv[2:]: info(p)
     elif sys.argv[1] == 'extract':
         extract(sys.argv[2], sys.argv[3])
+    elif sys.argv[1] == 'verify':
+        for p in sys.argv[2:]: verify(p)
     elif sys.argv[1] == 'merge':
         merge(sys.argv[2], sys.argv[3], sys.argv[4])

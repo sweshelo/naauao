@@ -74,21 +74,22 @@ Update の RomFS は**差分だけ** (アーカイブ 11 個 + `patchList.bin`)�
 
 → バランス調整 (ワザ・状態・出現する敵)、テキスト修正、イベント 1 か所、タイトル画面。ゲームデータの解析は **Update 側を正**とする。
 
-### 3.3 マージの方法 (3 通り)
+### 3.3 マージと配り方 (4 通り)
 
 | 方法 | やること | 用途 | 確認 |
 |---|---|---|---|
 | A. 仮想マージ | Base の RomFS を読み、`patchList.bin` にあるハッシュだけ Update の RomFS から読む。code.bin は Update | 解析・Panana の読み込み | `ctr.py merge` で実装。ゲームのパス選択 (§3.1) と同じ規則 |
 | B. LayeredFS (CIA は作り直さない) | Base と Update を両方インストールし、MOD のファイルを `luma/titles/00040000000EF000/romfs/` (Azahar は `load/mods/00040000000EF000/romfs/`) に置く | MOD の配布・実機 | 下記のソースで確認。実機・Azahar での動作は未確認 |
-| C. 1 本の CIA に焼く | Base の NCCH の ExHeader と ExeFS を Update のものにし、RomFS を A の結果で作り直して (3dstool / makerom) CIA にする | アップデートなしで遊べる 1 本にしたいとき | 未検証 |
+| C. 1 本の CIA に焼く | Base の NCCH の ExHeader と ExeFS を Update のものにし、RomFS を A の結果で作り直して CIA にする (`ctrbuild.py applied`) | アップデートなしで遊べる 1 本にしたいとき | ハッシュまで検証済み、起動は未確認 (`oahu/update.md`) |
+| D. MOD を Update として配る | 公式 Update + 変えたアーカイブ + 作り直した patchList.bin で、TitleVersion を上げた Update CIA を作る (`ctrbuild.py update`) | LayeredFS なしで MOD を入れる | 同上 (`oahu/update.md`) |
 
-**B が MOD の本命。** 理由:
+B と D が MOD の配り方の候補 (D の詳細は `oahu/update.md`)。B について:
 - Luma3DS の LayeredFS は、code.bin に `\0patch:` があればそれを「Update の RomFS」のマウント名とみなし、`rom:` と `patch:` の両方のパスを SD の `romfs/` に振り替える (sysmodules/loader `patcher.c` の `updateRomFsMounts`、`romfsredir.s` の `fsRedir`。SD にファイルがなければ元のアーカイブから開く)。フォルダ名はアップデートの ID ではなく、Base のタイトル ID (`00040000000EF000`)。
 - Azahar も、Update の NCCH (`0004000E...`) に対して `GetModId` で `0004000E` → `00040000` に読み替え、同じ `mods/00040000000EF000/` を Base と Update の両方の RomFS に重ねる (`src/core/file_sys/ncch_container.cpp`)。`exefs/code.ips` もこのフォルダ。
 - どちらの場合も、MOD に入れたアーカイブは `rom:` / `patch:` のどちらで開かれても MOD 側が使われる。**MOD に入れるアーカイブは Update 版を元に作る** (patchList の 11 個は Base 版を元にすると、アップデートの修正が消える)。
 - code.ips は Update の code.bin (v4096) のアドレスで書く。
 
-C の注意:
+C の注意 (詳細は `oahu/update.md`):
 - Update の RomFS だけを使う方法 (アップデートが RomFS を丸ごと持つゲーム向けの一般的な手順) は**使えない**。RPG3 の Update の RomFS は差分だけなので、ほとんどのデータが欠ける。
 - 焼いた CIA には `patch:` がないので、`patchList.bin` の読み込みは失敗してリストは空になり、全部 `rom:` から読まれる (§3.1 のコードでは失敗を無視する)。ただし、焼いた CIA と本物の Update を同時に入れると、`patch:` 側 (公式の Update) が優先される。
 - 実機・Azahar での起動は未確認。

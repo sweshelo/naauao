@@ -35,8 +35,9 @@ RPG3 (内部名 oahu、タイトル 00040000000EF000) の解析は `oahu/` に�
 | 話題 | ファイル | 内容 |
 |---|---|---|
 | ROM・全体 | oahu/analysis.md | ROM 情報、展開手順、Base + Update のマージ (`rom:` / `patch:`、patchList.bin、LayeredFS)、RomFS とアーカイブ (version 7)、master `21350000` のテーブル一覧、GMSG の ID 範囲、分かった欄、code.bin のアドレス、RPG2 との違い |
+| アップデートと CIA の書き出し | oahu/update.md | Update の仕組み (ExeFS の差し替え、SelfNCCH の RomFS / UpdateRomFS)、Update 適用済み CIA と MOD 入り Update CIA の作り方、署名とハッシュ、テスト MOD |
 | Panana 両対応 | oahu/panana-compat.md | 2 / 3 で共通の層と作り直す層、分け方の案、要検討の点 |
-| ツール | oahu/tools/*.py | ctr.py (CIA 展開・マージ)、gsarc.py、gsmb.py、armdis.py。ROM 本体はリポジトリに入れない |
+| ツール | oahu/tools/*.py | ctr.py (CIA 展開・マージ・検証)、ctrbuild.py (RomFS / NCCH / CIA の組み立て)、testmod.py、gsarc.py、gsmb.py、armdis.py。ROM 本体はリポジトリに入れない |
 
 ## データ表（reference/）
 
