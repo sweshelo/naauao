@@ -144,7 +144,7 @@ RPG2 の `56562135` に当たる。GS テーブル (type 9 / 0) 92 個、GMSG 3 
 | mapData.bin | 167 × 0x7 (+ 追加領域 0x4E0) | |
 | mapObject.bin | 510 × 0x38 | |
 | levelData.bin | 199 × 0x5C | |
-| soundData.bin | 597 × 0xC | |
+| soundData.bin | 597 × 0xC | 418 × 0xC (`oahu/sound.md`) |
 | flagData.bin | 259 × 0x10 | |
 | vendor.bin | (type 0、64488 B) | (type 0) |
 
@@ -213,6 +213,7 @@ RPG2 の `56562135` に当たる。GS テーブル (type 9 / 0) 92 個、GMSG 3 
 | `FUN_00495fd0` | 起動時の初期化 (patchList → master の読み込み) |
 | `0x5A5A00` / `0x5A5A1E` | `L"rom:/XXXXXXXX"` / `L"patch:/XXXXXXXX"` のバッファ |
 
+- master の表は、マスター (`*0x59F200`) の中の 0x1C バイトの読み手で引く。表 → 読み手のオフセットは `FUN_001D9BBC` で決まる (一覧は `oahu/sound.md` §4)。
 - RPG2 と同じエンジン (アーカイブ・GS テーブル・GMSG の形式とエントリハッシュが共通) だが、**アドレスは全部別**。RPG2 の `FUN_` 名は使えない。
 - Base と Update でもアドレスが少しずれている (例: パスを作る関数 Base `0x11ACEC` / Update `0x11AD1C`、text が 0x1C08 増えた)。
 

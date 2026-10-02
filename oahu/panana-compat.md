@@ -18,7 +18,7 @@
 | `src/game/` (8,070) | テーブルの欄、イベント、スクリプト、code.bin 由来の定数・パッチ | **大半がゲームごと**。欄の定義・アドレス (`FUN_` / 定数約 300 か所)・code.ips の中身は RPG3 で解析し直し |
 | `src/cgfx/` (2,111) | CGFX → three.js | RPG3 のモデルは BCH (H3D)。**BCH の読み込みを新しく作る** (頂点・テクスチャの PICA の部分は CGFX と共通なので流用できる)。エフェクトは RPG3 も CGFX |
 | `src/editor/` (4,001) | マップエディタ | マップの区画の形式を RPG3 で調べてから。RPG2 の構造と近ければ共通化、違えば別実装 |
-| `src/sound/` (1,020) | bcsar / bcstm | RPG3 も `sound/sound.bcsar` と bcstm。共通にできる見込み (未確認) |
+| `src/sound/` (1,020) | bcsar / bcstm | **共通 (確認済み)**。RPG3 も `sound/sound.bcsar` と bcstm で、そのまま読めて鳴らせる (`oahu/sound.md`) |
 | `src/pages/` `src/ui/` (6,410) | 画面 | 枠・ダイアログ・一覧などは共通。各エディタの欄はゲーム定義から作る形にすると重複が減る |
 | `src/export/` (124) | MOD の書き出し | 書き出し先のタイトル ID を `00040000000EF000` にする。RPG3 では patchList の 11 アーカイブを Update 版から作る (`analysis.md` §3.3 B)。**MOD を Update CIA として書き出す**方法も取れる (`oahu/update.md`。`ctrbuild.py` の RomFS / NCCH / CIA の組み立てを TypeScript に移す。数百行) |
 
