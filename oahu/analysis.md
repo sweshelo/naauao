@@ -195,6 +195,7 @@ RPG2 の `56562135` に当たる。GS テーブル (type 9 / 0) 92 個、GMSG 3 
 
 ### actionData.bin (1126 × 0x30)
 - +0x00 ビットフィールド、+0x08 名前、+0x0C 以降に使ったとき・結果のメッセージ (MessageBattle の 30000 台)。RPG2 (0x3C) より 12 バイト短く、並びが違う。
+- 欄の全体と、系統 (+0x2C) ごとの +0x18 / +0x1A の意味は `oahu/actions.md`。
 
 ### monsterParameter.bin (201 × 0x70)
 - RPG2 と同じくビット詰め。+0x40 = 名前 (例 行 1「はなもぐら」)、+0x44 = 説明。RPG2 では名前は別アーカイブの MonsterDesign にあったが、RPG3 では MonsterParameter が直接メッセージ ID を持つ。
