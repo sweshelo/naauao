@@ -149,6 +149,7 @@ RPG2 の `56562135` に当たる。GS テーブル (type 9 / 0) 92 個、GMSG 3 
 | vendor.bin | (type 0、64488 B) | (type 0) |
 
 - ほかに RPG3 で増えたもの: 釣り (`fishData` / `fishingHook` / `fishingPoint` / `fishingRod` / `fishingLevel`)、植物 (`plantInfo` / `plantMap` / `plantPoint`)、なごみ (`nagomiHouseList` / `nagomiCatchList` / `nagomiTownList`)、電波人間の作成 (`createSelect*` 16 個)、`denpaCustom`、`reBossInfo`、`insideInterior`、`designedMap` など。
+- `flagData.bin` はセーブの値の定義表 (行 = キー、ビット数と要素の数)。ストーリーの進行度 (キー 0x74) とナビの表 `mapNavi.bin` は `oahu/story.md`。
 - `flagDataHonolulu.bin` (87 × 0x10) / `flagDatakahara.bin` (150 × 0x10) と、それぞれの `flagDataLevel*`: 前作 (honolulu) と RPG2 (kahara) の、名前付きのフラグ表。前作のセーブとの連動に使うと推定 (未確認)。
 - GS テーブルのヘッダー (`analysis.md`「GS テーブル形式」) は同じ (+0x00 行数、+0x04 行サイズ、+0x10 データ開始、+0x30 テーブル名)。+0x20 が 0 でないテーブル (mapData、treasureGroup、monsterGroup など) は、行の後ろに追加の領域がある (中身は未解析)。
 - **行の中身は RPG2 と違う。** 欄の並びは作り直し (§6)。
