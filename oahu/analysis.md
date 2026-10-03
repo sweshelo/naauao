@@ -200,6 +200,9 @@ RPG2 の `56562135` に当たる。GS テーブル (type 9 / 0) 92 個、GMSG 3 
 ### monsterParameter.bin (201 × 0x70)
 - RPG2 と同じくビット詰め。+0x40 = 名前 (例 行 1「はなもぐら」)、+0x44 = 説明。RPG2 では名前は別アーカイブの MonsterDesign にあったが、RPG3 では MonsterParameter が直接メッセージ ID を持つ。
 
+### ShopItem・Shop (店)
+- `3B630000` と `E3C10000` に同じ中身で入っている。ShopItem は 782 × 0x10 (RPG2 の 8 バイトにジュエルの値段と「1 回だけ」の番号が増えた)、Shop は 44 × 0x38 (部屋のモデル・店員・支払いの種類)。詳しくは `oahu/shops.md`。
+
 ### conditionData.bin (125 × 0x3C)
 - +0x00 リソースハッシュ (アイコンと推定)、+0x0C 以降に「しかし どくにはならなかった」などのメッセージ。
 
