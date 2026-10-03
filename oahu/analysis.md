@@ -149,6 +149,7 @@ RPG2 の `56562135` に当たる。GS テーブル (type 9 / 0) 92 個、GMSG 3 
 | vendor.bin | (type 0、64488 B) | (type 0) |
 
 - ほかに RPG3 で増えたもの: 釣り (`fishData` / `fishingHook` / `fishingPoint` / `fishingRod` / `fishingLevel`)、植物 (`plantInfo` / `plantMap` / `plantPoint`)、なごみ (`nagomiHouseList` / `nagomiCatchList` / `nagomiTownList`)、電波人間の作成 (`createSelect*` 16 個)、`denpaCustom`、`reBossInfo`、`insideInterior`、`designedMap` など。
+- `flagData.bin` はセーブの値の定義表 (行 = キー、ビット数と要素の数)。ストーリーの進行度 (キー 0x74) とナビの表 `mapNavi.bin` は `oahu/story.md`。
 - `flagDataHonolulu.bin` (87 × 0x10) / `flagDatakahara.bin` (150 × 0x10) と、それぞれの `flagDataLevel*`: 前作 (honolulu) と RPG2 (kahara) の、名前付きのフラグ表。前作のセーブとの連動に使うと推定 (未確認)。
 - GS テーブルのヘッダー (`analysis.md`「GS テーブル形式」) は同じ (+0x00 行数、+0x04 行サイズ、+0x10 データ開始、+0x30 テーブル名)。+0x20 が 0 でないテーブル (mapData、treasureGroup、monsterGroup など) は、行の後ろに追加の領域がある (中身は未解析)。
 - **行の中身は RPG2 と違う。** 欄の並びは作り直し (§6)。
@@ -156,6 +157,7 @@ RPG2 の `56562135` に当たる。GS テーブル (type 9 / 0) 92 個、GMSG 3 
 ### 4.4 マップ・イベントのアーカイブ
 - ダンジョン・町ごとに 2 エントリのアーカイブ (`d10_EventObject.bin` + `d10_StaticEvent.bin` など) が 82 組ある。接頭辞: d10〜d90、e01〜e03、f20〜f92、h01、i01〜i24、k01〜k03、m10〜m90、s11〜s70、w01。
 - EventObject は **0x58 バイト** (RPG2 は 0x50)。StaticEvent は 4 バイト × n。
+- マップ DB (`B68E0000` / `A2C14C00`)、マップ表 (`B68E0000` / `5405E800`)、区画と EventObject の欄は `oahu/map.md`。
 - ワールドマップ: master の `W01_ground.bin` (type 0) と `worldmapParts` / `worldmapPort`。
 
 ## 5. メッセージ (GMSG)
@@ -235,8 +237,8 @@ RPG2 の `56562135` に当たる。GS テーブル (type 9 / 0) 92 個、GMSG 3 
 | EventObject | 0x50 | 0x58 |
 
 ## 9. 未解析
-- 各 GS テーブルの欄 (§6 は一部だけ)、vendor.bin、mapParts などのマップの区画。
-- type 8 / 10 の BCH の中身 (マップのパーツ・モデル)。0x180 バイトのヘッダーの意味。
+- 各 GS テーブルの欄 (§6 は一部だけ)、vendor.bin。マップの区画と mapParts・type 8 のヘッダーは `oahu/map.md` (残りは同 §7)。
+- type 10 の BCH の中身。
 - メッセージのタグの全体 (`0x2B〜0x2D` 以外)。
 - flagDataHonolulu / kahara の用途。
 - マージ方法 B / C の実機・Azahar での動作確認。
