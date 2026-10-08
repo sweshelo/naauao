@@ -1,9 +1,9 @@
 # RPG3 (oahu) の BGM・効果音
 
-RPG3 の音の形式と、BGM・効果音が**どこで決まるか** (マップ・ダンジョンの戦闘・決まった戦闘・コード) をまとめる。アドレスは Update (v4096) の code.bin。RPG2 (kahara) の音は `encounters.md` §4・§5。
+RPG3 の音の形式と、BGM・効果音が**どこで決まるか** (マップ・ダンジョンの戦闘・決まった戦闘・コード) をまとめる。アドレスは Update (v4096) の code.bin。RPG2 (kahara) の音は [kahara/encounters.md](../kahara/encounters.md) §4・§5。
 
 ## 1. 形式
-- **RPG2 と同じ。** RomFS の `sound/sound.bcsar` (CSAR) に音 611 個の名前・種類・波形・シーケンスがあり、BGM と ME は `sound/stream/*.bcstm` (DSP ADPCM、クルーザーの 2 曲だけ PCM8) のストリーム。Panana の `src/sound/` (CSAR・CWAR・CBNK・CSEQ・CSTM の読み込みと再生) がそのまま使える (ストリーム・波形・シーケンスの 3 種類とも再生を確認)。
+- **RPG2 と同じ。** RomFS の `sound/sound.bcsar` (CSAR) に音 611 個の名前・種類・波形・シーケンスがあり、BGM と ME は `sound/stream/*.bcstm` (DSP ADPCM、クルーザーの 2 曲だけ PCM8) のストリーム。ストリーム・波形・シーケンスの 3 種類とも再生確認の記録がある ([検証に用いた実装](../integrations/panana/oahu.md))。
   - ストリームのファイル名は音の名前と違うことがある (音 `BGM_VILLA_DESERT` → `BGM_DESERT.dspadpcm.bcstm`)。CSAR のファイル表がパスを持つので、名前から組み立てずにファイル表を引く。
   - `sound/voice/` は音声合成 (電波人間の名前の読み上げ) のデータ。
 - Update の RomFS は音を差し替えない (patchList の 11 アーカイブに音はない)。音は Base だけで読める。
@@ -79,39 +79,15 @@ RPG2 と同じく **[4] フィールドの BGM、[5] 戦闘の BGM、[6] 足音*
 - ほかに、曲の一覧を順に回す処理 (`@0x27E0C0`。+0x0A からの u16 の並び) と、イベントのスクリプトから鳴らすもの (`@0x27EA00` など) がある。スクリプトの中の BGM は未集計。
 
 ## 4. マスターの表の読み手
-RPG3 のコードは master の表を名前ではなく、マスター (`*0x59F200`) の中の**読み手** (0x1C バイト: +0x04 表の先頭、+0x0C 行、+0x10 行のポインタ、+0x14 状態) で引く。エントリのハッシュ → 読み手のオフセットは `FUN_001D9BBC` (ハッシュの二分探索の分岐) で決まる。これを実行して得た対応 (92 個中 82 個。残りの flagData 系・vendor・innSetting・W01_ground・denpaHash はここでは割り当てない):
 
-| オフセット | 表 | オフセット | 表 | オフセット | 表 |
-|---|---|---|---|---|---|
-| +0x000 | floorData | +0x310 | treasureGroup | +0x690 | denpaByeEvent |
-| +0x01C | animData | +0x32C | mapChara | +0x6AC | denpaRecoverEvent |
-| +0x0E0 | actionData | +0x348 | mapCamera | +0x700 | common_SaveDenpaHome |
-| +0x0FC | antennaGroup | +0x364 | **mapData** | +0x738 | mapNavi |
-| +0x118 | itemData | +0x380 | mapResource | +0x754 | cecLampIgnore |
-| +0x134 | levelData | +0x39C | mapExtraRoom | +0x770 | houseRoofColor |
-| +0x150 | bodyData | +0x3B8 | mapEffect | +0x78C | npcCollisionSize |
-| +0x16C | bodyColorData | +0x3D4 | mapObject | +0x7A8 | mapExit |
-| +0x188 | headData | +0x3F0 | mapSaveRestart | +0x7C4 | battleParameter |
-| +0x1A4 | headDataRare | +0x40C | scriptCharacterPopupPos | +0x834〜+0x9F4 | createRarityLot・createSelect* (16 個) |
-| +0x1C0 | conditionData | +0x498 | mapParts | +0xA2C | monsterEffect |
-| +0x1DC | denpaPersonality | +0x4D0 | designedMap | +0xA48 | monsterParameter |
-| +0x1F8 | initLevelData | +0x4EC〜+0x524 | plantInfo / plantMap / plantPoint | +0xA64 | **monsterGroup** |
-| +0x214 | **soundData** | +0x540〜+0x5B0 | fishData / fishingHook / fishingPoint / fishingRod / fishingLevel | +0xA80 | reBossInfo |
-| +0x230 | stereoCamera | +0x5CC | previewParameter | +0xA9C〜+0xAD4 | nagomiHouseList / nagomiCatchList / nagomiTownList |
-| +0x24C | font | +0x5E8 | insideInterior | | |
-| +0x268 | areaInfoData | +0x604 / +0x620 | worldmapParts / worldmapPort | | |
-| +0x284 | denpaCustom | +0x63C / +0x658 / +0x674 | mapAppearPos / mapAppearWorldmap / mapJumpPoint | | |
-| +0x2A0 / +0x2BC | actionCamera / statusCommunity | | | | |
-| +0x2D8 | **mapGroup** | | | | |
-| +0x2F4 | dungeonEnv | | | | |
+音を含む全テーブルの読み手一覧は [master-readers.md](master-readers.md) を参照。
 
-- 表の読み手の使い方は RPG2 と同じ (`FUN_0022C084(読み手, 行)` で行のポインタ)。ある表を読む関数を探すときは、`*0x59F200 + オフセット` を探すとよい。
+## 5. ツールでの利用
 
-## 5. Panana
-- `#/sounds` (BGM・効果音) は RPG2 の一覧・試聴の部品 (`pages/sounds` の `SoundView`、`ui/SoundPicker`) をそのまま使い、RPG3 の「使われている場所」(§3) を出す (`src/oahu/sound.ts`、`src/oahu/SoundPage.tsx`)。§3.3・§3.4 のコードの呼び出しは、Update の code.bin を BL / B 命令で走査して見つける (Update がないときは出さない)。
+Panana の共用実装・UI・検証記録は [連携資料](../integrations/panana/oahu.md) を参照。
 
 ## 6. 未解析
-- イベントのスクリプトから鳴らす BGM・ME・効果音 (RPG3 のスクリプト実行器がまだない)。
-- マップ (キー) → mapData の行の対応 (#66)。
+- イベントのスクリプトから鳴らす BGM・ME・効果音 (イベント実行器は [events.md §3](events.md) に記録があるが、ここでは音の呼び出しとの対応が未解析)。
+- マップ (キー) → mapData の行の対応は [map.md §4](map.md) を参照。
 - ギミック (EventObject) の効果音、アクションの演出の効果音の欄。
 - `@0x2E040C` などの特別な戦闘の場面、ワールドマップの状態 4〜6 の正確な条件。
