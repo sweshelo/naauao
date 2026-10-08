@@ -1,0 +1,13 @@
+__pycache__/
+*.py[cod]
+*.cia
+*.3ds
+*.cxi
+*.cfa
+*.gpg
+code.bin
+exheader.bin
+extracted/
+out/
+.env
+.env.*

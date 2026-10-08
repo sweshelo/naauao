@@ -1,98 +1,20 @@
 # 電波人間のRPG3 (oahu) 解析メモ
 
-RPG2 (kahara) のドキュメント (リポジトリのルート) と同じ書き方で、RPG3 の ROM を調べた結果をまとめる。RPG2 と比べた違いは各節の「RPG2 との違い」と §8 にまとめた。Panana の 2/3 両対応の検討は `oahu/panana-compat.md`。
+RPG2 ([kahara](../kahara/README.md)) のドキュメント と同じ書き方で、RPG3 の ROM を調べた結果をまとめる。RPG2 と比べた違いは各節の「RPG2 との違い」と §8 にまとめた。Panana の 2/3 両対応の検討は [Panana連携の検討記録](../integrations/panana/panana-compat.md)。
+
+対象は日本版 Base v0 + Update v4096。アドレスは特記がなければ Update の展開済み `code.bin`（base `0x100000`）。今回の再確認範囲は [検証記録](../roms/verification.md)。
 
 ## 1. ROM 基本情報
 
-| | Base | Update |
-|---|---|---|
-| ファイル | `0004000E000EF000-v0.1.0.cia` | `0004000E000EF000-v4.7.0.cia` |
-| タイトル ID (TMD) | `00040000000EF000` | `0004000E000EF000` |
-| TitleVersion (TMD) | 0 | 4096 (= 4.0.0。ファイル名の v4.7.0 とは一致しない) |
-| 製品コード | CTR-N-JDRJ | CTR-U-JDRJ |
-| ExHeader の名前 | `oahu` | `oahu` |
-| 暗号 | なし (NCCH flags[7] の NoCrypto) | なし |
-| ExeFS | `.code` (LZ) / banner / icon / logo | `.code` / icon / logo (banner なし) |
-| RomFS | 0xBFF7000 (約 192 MB、269 ファイル) | 0x627000 (約 6 MB、12 ファイル) |
-| コンテンツ 1 | 電子説明書 (CFA, 0x159000) | 同じ |
-
-- 開発コード名は **`oahu`** で確定 (ExHeader の名前)。`honolulu` は RPG3 自身ではなく、master にある `flagDataHonolulu.bin` の名前に出てくる (§4.3)。`kahara` (RPG2 の内部名) と並んでいるので、RPG2 より前の作品 (初代「電波人間のRPG」など) の内部名と推定。
-- ExHeader (展開後の code.bin はセクションが連続していて、RPG2 と同じく base 0x100000 のフラットバイナリとして読める):
-
-| | Base | Update |
-|---|---|---|
-| text | 0x00100000 (0x453CB8) | 0x00100000 (0x4558C0) |
-| ro | 0x00554000 (0x401DC) | 0x00556000 (0x4023C) |
-| data | 0x00595000 (0x3452C) | 0x00597000 (0x34568) |
-| bss | 0x6FEA4 | 0x6F8E8 |
-| code.bin (展開後) | 5,021,696 B | 5,029,888 B |
-
-- CPU は RPG2 と同じ ARM11。依存するシステムモジュール (ExHeader の deps) も Base と Update で同じ。
-- **実際に動くのは Update の code.bin。** アップデートを入れた状態でゲームが起動するのは Update の NCCH (ExeFS) なので、code.ips やアドレスはすべて Update (TitleVersion 4096) の code.bin を基準にする。
+タイトル ID・版・ExHeader・セクション配置は [ROM 識別](../roms/oahu.md) を参照。
 
 ## 2. 展開手順
 
-`oahu/tools/` の Python スクリプトで、ctrtool や boot9 なしで展開できる (どちらも復号済みの CIA が前提)。
+[CIA の展開・マージ](../roms/oahu.md#2-展開手順) と [同梱ツール](../roms/README.md) を参照。コマンドはリポジトリルートから実行する。
 
-```
-python3 oahu/tools/ctr.py info  base.cia update.cia            # CIA / TMD / NCCH / ExHeader の要約
-python3 oahu/tools/ctr.py extract base.cia   out/base           # exheader.bin, exefs/code.bin (展開済み), romfs/
-python3 oahu/tools/ctr.py merge base.cia update.cia out/merged  # ゲームから見える状態 (§3) を 1 つのフォルダに
-python3 oahu/tools/gsarc.py catalog out/merged/romfs            # ルートのアーカイブの一覧
-python3 oahu/tools/gsarc.py list|unpack <archive> [outdir]
-python3 oahu/tools/gsmb.py <file.gsmb> [ID ...]
-python3 oahu/tools/armdis.py out/merged/exefs/code.bin <addr> [count]   # capstone が必要
-```
+## 3. Base と Update のマージ
 
-- `merge` の出力 (`exheader.bin` / `exefs/code.bin` / `romfs/`) は、RPG2 の `extracted/` と同じ形 (code.bin + RomFS のルートファイル) なので、Panana のフォルダ入力 (`openFolder`) の形にもそのまま合う。
-- ROM 本体と展開したデータはリポジトリに入れない。
-
-## 3. Base と Update のマージ (確定)
-
-### 3.1 ゲームのしくみ: `rom:` と `patch:` の 2 段
-Update の RomFS は**差分だけ** (アーカイブ 11 個 + `patchList.bin`)。ゲームは Base の RomFS を `rom:`、Update の RomFS を `patch:` にマウントし、ルートファイルごとにどちらを開くかを決める。
-
-- 起動時 (`FUN_00495fd0`、Update の code.bin) に `FUN_002cb430(*0x5A59DC, L"patch:/patchList.bin")` がリストを読む。ファイルが開けなければ何もしない (リストは空のまま)。
-  - 置き場所: リソース管理 (`*0x5A59DC`) の +0x80 = ハッシュの配列 (malloc)、+0x84 = 件数。
-- `patchList.bin` の形式: `u32 件数, u32 ハッシュ × 件数`。v4096 の中身 (11 件): `21350000 3B630000 A9DF0000 296B0000 97CF0000 7BF70000 619D0000 838B0000 58190000 00910000 6E380000`。
-- パスを作る関数 `FUN_0011ad1c(hash)` (Update): ハッシュがリストにあれば `L"patch:/XXXXXXXX"` (0x5A5A1E)、なければ `L"rom:/XXXXXXXX"` (0x5A5A00) を返す。Base の同じ関数 (`FUN_0011acec`) は `rom:/` しか作らない (Base の code.bin には `patch:` の文字列自体がない)。
-- つまり**置き換えの単位はルートのアーカイブ 1 個まるごと**。アーカイブの中のエントリ単位の差分ではない。
-
-### 3.2 Update で変わったもの (v0 → v4096)
-11 アーカイブとも、エントリ数・ハッシュは Base と同じで、中身が変わったエントリだけが違う。
-
-| アーカイブ | 変わったエントリ |
-|---|---|
-| 21350000 (master) | font_hamming_14 / 08.nftr、MessageSystemCommon_JP(_IN).gsmb、MessageBattle_JP.gsmb、**actionData.bin**、**monsterGroup.bin**、**conditionData.bin** |
-| 00910000 | MessageAntenna_JP.gsmb |
-| 296B0000 | font_rr_shadow_16.nftr |
-| 3B630000 / 58190000 / 619D0000 / 838B0000 | MessageCommand_JP.gsmb (4 つとも同じ内容。RPG2 と同じく 4 か所に入っている) |
-| 6E380000 | MessageNagomi_JP(_IN).gsmb、nagomiCatchItem.bin |
-| 7BF70000 | title.arc (タイトル画面のレイアウト) |
-| 97CF0000 | m10_EventObject.bin |
-| A9DF0000 | MessageField_JP.gsmb |
-
-→ バランス調整 (ワザ・状態・出現する敵)、テキスト修正、イベント 1 か所、タイトル画面。ゲームデータの解析は **Update 側を正**とする。
-
-### 3.3 マージと配り方 (4 通り)
-
-| 方法 | やること | 用途 | 確認 |
-|---|---|---|---|
-| A. 仮想マージ | Base の RomFS を読み、`patchList.bin` にあるハッシュだけ Update の RomFS から読む。code.bin は Update | 解析・Panana の読み込み | `ctr.py merge` で実装。ゲームのパス選択 (§3.1) と同じ規則 |
-| B. LayeredFS (CIA は作り直さない) | Base と Update を両方インストールし、MOD のファイルを `luma/titles/00040000000EF000/romfs/` (Azahar は `load/mods/00040000000EF000/romfs/`) に置く | MOD の配布・実機 | 下記のソースで確認。実機・Azahar での動作は未確認 |
-| C. 1 本の CIA に焼く | Base の NCCH の ExHeader と ExeFS を Update のものにし、RomFS を A の結果で作り直して CIA にする (`ctrbuild.py applied`) | アップデートなしで遊べる 1 本にしたいとき | ハッシュまで検証済み、起動は未確認 (`oahu/update.md`) |
-| D. MOD を Update として配る | 公式 Update + 変えたアーカイブ + 作り直した patchList.bin で、TitleVersion を上げた Update CIA を作る (`ctrbuild.py update`) | LayeredFS なしで MOD を入れる | 同上 (`oahu/update.md`) |
-
-B と D が MOD の配り方の候補 (D の詳細は `oahu/update.md`)。B について:
-- Luma3DS の LayeredFS は、code.bin に `\0patch:` があればそれを「Update の RomFS」のマウント名とみなし、`rom:` と `patch:` の両方のパスを SD の `romfs/` に振り替える (sysmodules/loader `patcher.c` の `updateRomFsMounts`、`romfsredir.s` の `fsRedir`。SD にファイルがなければ元のアーカイブから開く)。フォルダ名はアップデートの ID ではなく、Base のタイトル ID (`00040000000EF000`)。
-- Azahar も、Update の NCCH (`0004000E...`) に対して `GetModId` で `0004000E` → `00040000` に読み替え、同じ `mods/00040000000EF000/` を Base と Update の両方の RomFS に重ねる (`src/core/file_sys/ncch_container.cpp`)。`exefs/code.ips` もこのフォルダ。
-- どちらの場合も、MOD に入れたアーカイブは `rom:` / `patch:` のどちらで開かれても MOD 側が使われる。**MOD に入れるアーカイブは Update 版を元に作る** (patchList の 11 個は Base 版を元にすると、アップデートの修正が消える)。
-- code.ips は Update の code.bin (v4096) のアドレスで書く。
-
-C の注意 (詳細は `oahu/update.md`):
-- Update の RomFS だけを使う方法 (アップデートが RomFS を丸ごと持つゲーム向けの一般的な手順) は**使えない**。RPG3 の Update の RomFS は差分だけなので、ほとんどのデータが欠ける。
-- 焼いた CIA には `patch:` がないので、`patchList.bin` の読み込みは失敗してリストは空になり、全部 `rom:` から読まれる (§3.1 のコードでは失敗を無視する)。ただし、焼いた CIA と本物の Update を同時に入れると、`patch:` 側 (公式の Update) が優先される。
-- 実機・Azahar での起動は未確認。
+[ゲームによる差分選択と配布方式](../roms/oahu-update.md#ゲームによる差分選択と配布方式) に移設した。`patchList.bin` の11アーカイブは Update を使い、`code.bin` も Update を基準にする。旧 §3.1〜§3.3 の関数・表・配布方式は移設先に保全している。
 
 ## 4. RomFS
 
@@ -101,7 +23,7 @@ C の注意 (詳細は `oahu/update.md`):
 - **RPG2 との違い**: RPG2 のルートは 32 ビットのハッシュ (`56562135` など)。RPG3 の名前は **RPG2 のハッシュの下位 16 ビットを上に寄せたもの**になっている。master: RPG2 `56562135` → RPG3 `21350000`、MessageCommand の 4 アーカイブ: RPG2 `1D37838B / 49A43B63 / 91B0619D / BACF5819` → RPG3 `838B0000 / 3B630000 / 619D0000 / 58190000`。
 
 ### 4.2 アーカイブの形式 (確定)
-RPG2 の形式 (`analysis.md`「RomFS」) とヘッダー・エントリの並びは同じ。違いは version と +0x14 の値だけ。
+RPG2 の形式 ([kahara/romfs.md](../kahara/romfs.md)) とヘッダー・エントリの並びは同じ。違いは version と +0x14 の値だけ。
 
 | off | 型 | 内容 |
 |---|---|---|
@@ -130,7 +52,7 @@ RPG2 の形式 (`analysis.md`「RomFS」) とヘッダー・エントリの並�
 - 3D モデルは **BCH** (Nintendo の H3D 形式。SPICA / Ohana3DS が対応)、エフェクトは CGFX。
 
 ### 4.3 master アーカイブ `21350000` (288 エントリ、Update で差し替え)
-RPG2 の `56562135` に当たる。GS テーブル (type 9 / 0) 92 個、GMSG 3 個、フォント、共通レイアウトなど。主な GS テーブル (行数 × 行サイズ。RPG2 の値は `analysis.md` / `battle.md` などから):
+RPG2 の `56562135` に当たる。GS テーブル (type 9 / 0) 92 個、GMSG 3 個、フォント、共通レイアウトなど。主な GS テーブル (行数 × 行サイズ。RPG2 の値は [kahara/items.md](../kahara/items.md) / [kahara/battle.md](../kahara/battle.md) などから):
 
 | テーブル | RPG3 | RPG2 |
 |---|---|---|
@@ -144,24 +66,24 @@ RPG2 の `56562135` に当たる。GS テーブル (type 9 / 0) 92 個、GMSG 3 
 | mapData.bin | 167 × 0x7 (+ 追加領域 0x4E0) | |
 | mapObject.bin | 510 × 0x38 | |
 | levelData.bin | 199 × 0x5C | |
-| soundData.bin | 597 × 0xC | 418 × 0xC (`oahu/sound.md`) |
+| soundData.bin | 597 × 0xC | 418 × 0xC ([sound.md](sound.md)) |
 | flagData.bin | 259 × 0x10 | |
 | vendor.bin | (type 0、64488 B) | (type 0) |
 
 - ほかに RPG3 で増えたもの: 釣り (`fishData` / `fishingHook` / `fishingPoint` / `fishingRod` / `fishingLevel`)、植物 (`plantInfo` / `plantMap` / `plantPoint`)、なごみ (`nagomiHouseList` / `nagomiCatchList` / `nagomiTownList`)、電波人間の作成 (`createSelect*` 16 個)、`denpaCustom`、`reBossInfo`、`insideInterior`、`designedMap` など。
-- `flagData.bin` はセーブの値の定義表 (行 = キー、ビット数と要素の数)。ストーリーの進行度 (キー 0x74) とナビの表 `mapNavi.bin` は `oahu/story.md`。
+- `flagData.bin` はセーブの値の定義表 (行 = キー、ビット数と要素の数)。ストーリーの進行度 (キー 0x74) とナビの表 `mapNavi.bin` は [story.md](story.md)。
 - `flagDataHonolulu.bin` (87 × 0x10) / `flagDatakahara.bin` (150 × 0x10) と、それぞれの `flagDataLevel*`: 前作 (honolulu) と RPG2 (kahara) の、名前付きのフラグ表。前作のセーブとの連動に使うと推定 (未確認)。
-- GS テーブルのヘッダー (`analysis.md`「GS テーブル形式」) は同じ (+0x00 行数、+0x04 行サイズ、+0x10 データ開始、+0x30 テーブル名)。+0x20 が 0 でないテーブル (mapData、treasureGroup、monsterGroup など) は、行の後ろに追加の領域がある (中身は未解析)。
+- GS テーブルのヘッダー ([共通 GS テーブル形式](../common/formats.md#gs-テーブル)) は同じ (+0x00 行数、+0x04 行サイズ、+0x10 データ開始、+0x30 テーブル名)。+0x20 が 0 でないテーブル (mapData、treasureGroup、monsterGroup など) は、行の後ろに追加の領域がある (中身は未解析)。
 - **行の中身は RPG2 と違う。** 欄の並びは作り直し (§6)。
 
 ### 4.4 マップ・イベントのアーカイブ
 - ダンジョン・町ごとに 2 エントリのアーカイブ (`d10_EventObject.bin` + `d10_StaticEvent.bin` など) が 82 組ある。接頭辞: d10〜d90、e01〜e03、f20〜f92、h01、i01〜i24、k01〜k03、m10〜m90、s11〜s70、w01。
 - EventObject は **0x58 バイト** (RPG2 は 0x50)。StaticEvent は 4 バイト × n。
-- マップ DB (`B68E0000` / `A2C14C00`)、マップ表 (`B68E0000` / `5405E800`)、区画と EventObject の欄は `oahu/map.md`。
+- マップ DB (`B68E0000` / `A2C14C00`)、マップ表 (`B68E0000` / `5405E800`)、区画と EventObject の欄は [map.md](map.md)。
 - ワールドマップ: master の `W01_ground.bin` (type 0) と `worldmapParts` / `worldmapPort`。
 
 ## 5. メッセージ (GMSG)
-形式は RPG2 と同じ (`analysis.md`「GMSG (.gsmb) メッセージ」: ヘッダー、ID 範囲、オフセット表、種別コード 1 文字 + 本文 + 0x0000)。違いは ID の振り方とタグ番号。
+形式は RPG2 と同じ ([共通 GMSG 形式](../common/formats.md#gmsg-メッセージ): ヘッダー、ID 範囲、オフセット表、種別コード 1 文字 + 本文 + 0x0000)。違いは ID の振り方とタグ番号。
 
 | ファイル | ID (本文) | 入っているアーカイブ |
 |---|---|---|
@@ -178,7 +100,7 @@ RPG2 の `56562135` に当たる。GS テーブル (type 9 / 0) 92 個、GMSG 3 
 - `_IN` (読み) は SystemCommon / Event / Field / Nagomi / Antenna にある。
 - **RPG2 との違い**: ID は 10000 刻みの区切りから始まる (RPG2 は詰めて通し番号)。ファイルの間に大きな空きがあるので、MOD でメッセージを足すときは各ファイルの末尾を伸ばすだけで ID がぶつからない (検索の規則が RPG2 と同じなら。未確認)。
 - 漢字にルビが付く。ルビのタグは **0x2B 親字 0x2C よみ 0x2D** (RPG2 は 0x27 / 0x28 / 0x29)。名前などの差し込みタグ (0x104 / 0x106 / 0x10D など) は番号が RPG2 と近いが、対応は未確認。
-- **別のメッセージの差し込みは `0x0002 0x002A ID 0x0000`** (確定。RPG2 は `0x0002 0x0026 ID 0x0000`)。ナビの見出し (`story.md` §1) の多くが場所の名前 (MessageSystemCommon_JP) をこれで差し込む。RPG2 の 0x26 のまま読むと、`*` (0x2A) と ID の文字が本文に混ざって見える。
+- **別のメッセージの差し込みは `0x0002 0x002A ID 0x0000`** (確定。RPG2 は `0x0002 0x0026 ID 0x0000`)。ナビの見出し ([story.md](story.md) §1) の多くが場所の名前 (MessageSystemCommon_JP) をこれで差し込む。RPG2 の 0x26 のまま読むと、`*` (0x2A) と ID の文字が本文に混ざって見える。
 
 ## 6. GS テーブルの欄 (分かった範囲)
 
@@ -198,13 +120,13 @@ RPG2 の `56562135` に当たる。GS テーブル (type 9 / 0) 92 個、GMSG 3 
 
 ### actionData.bin (1126 × 0x30)
 - +0x00 ビットフィールド、+0x08 名前、+0x0C 以降に使ったとき・結果のメッセージ (MessageBattle の 30000 台)。RPG2 (0x3C) より 12 バイト短く、並びが違う。
-- 欄の全体と、系統 (+0x2C) ごとの +0x18 / +0x1A の意味は `oahu/actions.md`。
+- 欄の全体と、系統 (+0x2C) ごとの +0x18 / +0x1A の意味は [actions.md](actions.md)。
 
 ### monsterParameter.bin (201 × 0x70)
 - RPG2 と同じくビット詰め。+0x40 = 名前 (例 行 1「はなもぐら」)、+0x44 = 説明。RPG2 では名前は別アーカイブの MonsterDesign にあったが、RPG3 では MonsterParameter が直接メッセージ ID を持つ。
 
 ### ShopItem・Shop (店)
-- `3B630000` と `E3C10000` に同じ中身で入っている。ShopItem は 782 × 0x10 (RPG2 の 8 バイトにジュエルの値段と「1 回だけ」の番号が増えた)、Shop は 44 × 0x38 (部屋のモデル・店員・支払いの種類)。詳しくは `oahu/shops.md`。
+- `3B630000` と `E3C10000` に同じ中身で入っている。ShopItem は 782 × 0x10 (RPG2 の 8 バイトにジュエルの値段と「1 回だけ」の番号が増えた)、Shop は 44 × 0x38 (部屋のモデル・店員・支払いの種類)。詳しくは [shops.md](shops.md)。
 
 ### conditionData.bin (125 × 0x3C)
 - +0x00 リソースハッシュ (アイコンと推定)、+0x0C 以降に「しかし どくにはならなかった」などのメッセージ。
@@ -213,13 +135,13 @@ RPG2 の `56562135` に当たる。GS テーブル (type 9 / 0) 92 個、GMSG 3 
 | アドレス | 内容 |
 |---|---|
 | `0x5A59DC` | リソース管理のポインタ (+0x80 / +0x84 = patchList) |
-| `FUN_0011ad1c` | ルートファイルのパス (`rom:/` か `patch:/`) を作る (§3.1) |
+| `FUN_0011ad1c` | ルートファイルのパス (`rom:/` か `patch:/`) を作る ([差分選択](../roms/oahu-update.md)) |
 | `FUN_002cb430` | `patch:/patchList.bin` を読む |
 | `FUN_002cb4d0` | ハッシュでアーカイブを開く (起動時に `0x21350000` = master を開く、`FUN_00495fd0` 内) |
 | `FUN_00495fd0` | 起動時の初期化 (patchList → master の読み込み) |
 | `0x5A5A00` / `0x5A5A1E` | `L"rom:/XXXXXXXX"` / `L"patch:/XXXXXXXX"` のバッファ |
 
-- master の表は、マスター (`*0x59F200`) の中の 0x1C バイトの読み手で引く。表 → 読み手のオフセットは `FUN_001D9BBC` で決まる (一覧は `oahu/sound.md` §4)。
+- master の表は、マスター (`*0x59F200`) の中の 0x1C バイトの読み手で引く。表 → 読み手のオフセットは `FUN_001D9BBC` で決まる (一覧は [master-readers.md](master-readers.md))。
 - RPG2 と同じエンジン (アーカイブ・GS テーブル・GMSG の形式とエントリハッシュが共通) だが、**アドレスは全部別**。RPG2 の `FUN_` 名は使えない。
 - Base と Update でもアドレスが少しずれている (例: パスを作る関数 Base `0x11ACEC` / Update `0x11AD1C`、text が 0x1C08 増えた)。
 
@@ -238,7 +160,7 @@ RPG2 の `56562135` に当たる。GS テーブル (type 9 / 0) 92 個、GMSG 3 
 | EventObject | 0x50 | 0x58 |
 
 ## 9. 未解析
-- 各 GS テーブルの欄 (§6 は一部だけ)、vendor.bin。マップの区画と mapParts・type 8 のヘッダーは `oahu/map.md` (残りは同 §7)。
+- 各 GS テーブルの欄 (§6 は一部だけ)、vendor.bin。マップの区画と mapParts・type 8 のヘッダーは [map.md](map.md) (残りは同 §7)。
 - type 10 の BCH の中身。
 - メッセージのタグの全体 (`0x2B〜0x2D` 以外)。
 - flagDataHonolulu / kahara の用途。

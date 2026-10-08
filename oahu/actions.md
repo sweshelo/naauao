@@ -2,7 +2,7 @@
 
 master (21350000) の `actionData.bin` (1126 行 × 0x30) の欄と、**系統 (+0x2C) ごとに +0x18・+0x1A などの意味がどう変わるか**をまとめる。アドレスは Update (v4096) の code.bin。
 
-RPG2 (kahara) のアクションは `battle.md` と `reference/actions.md`。RPG3 は行が 0x3C → 0x30 に縮み、並びも違う。
+RPG2 (kahara) のアクションは [kahara/battle.md](../kahara/battle.md) と [kahara/reference/actions.md](../kahara/reference/actions.md)。RPG3 は行が 0x3C → 0x30 に縮み、並びも違う。
 
 ## 1. 処理の流れ
 
@@ -20,7 +20,7 @@ RPG2 (kahara) のアクションは `battle.md` と `reference/actions.md`。RPG
 
 | off | 型 | 内容 | 根拠 |
 |---|---|---|---|
-| +0x00 | u32 | w0。bit0-2 種類、bit3-13 番号、bit19-20 狙う側、bit21-24 範囲、bit27-31 属性 (既知。Panana の `src/oahu/tables.ts`) | |
+| +0x00 | u32 | w0。bit0-2 種類、bit3-13 番号、bit19-20 狙う側、bit21-24 範囲、bit27-31 属性 (既存の解釈。出典: Panana `src/oahu/tables.ts`。この行のビット範囲は本書に読み取り関数の根拠が未記載) | |
 | | | bit14: 戦闘で使える (推定)。1092 行に立つ。立っていないのはステルス・アンテナのねっこと、ドーピング・ペイント・ランプなどの道具 | データ |
 | | | bit15: 戦闘の外でしか効かない道具 (推定)。系統 24〜34・39 の 20 行だけ | データ |
 | | | bit16: メニューから使える (推定)。回復・ふっかつ・げどく・ステルスと、それらの道具 | データ |
@@ -92,7 +92,7 @@ RPG2 (kahara) のアクションは `battle.md` と `reference/actions.md`。RPG
 - +0x1A は `ldrh` で読んで下位 8 ビットだけ使う (`@0x1B45AC`)。monsterParameter は 201 行なので 255 までで足りる。
 - 変身の 34 行 (系統 21・22) のうち、ボディから出すもの (種類 3、+0x2A = 101 倒される一撃、107 ブレス・呪文、110 属性) と、ワザの枠から AI が選ぶもの (種類 0。箱に隠れる・ふくらむ) がある。
 - ジャシン (#147) の #870: +0x18 = 1、+0x1A = 147、+0x2A = 101、+0x2C = 21。ボディ (monsterParameter +0x34) に入れ、倒される一撃で発動して #147 に作り直す。
-- 発動の条件 (+0x2A) とボディ・自動の枠の関係は `panana` の変身の調査 (PR #77) を参照。
+- 発動の条件 (+0x2A) とボディ・自動の枠の関係は [Panana の変身調査 PR #77](https://github.com/sweshelo/panana/pull/77) (本書に未収録の詳細) を参照。
 
 ### 変身の見た目 (monsterParameter +0x62)
 
