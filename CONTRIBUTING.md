@@ -7,6 +7,7 @@
 | 両作品で確認した形式、調査規則 | `common/` |
 | RPG2のゲーム仕様・個別データ | `kahara/`、`kahara/reference/` |
 | RPG3のゲーム仕様・個別データ | `oahu/`、`oahu/reference/` |
+| RPG FREE!のゲーム仕様・個別データ | `lanai/` |
 | ROMの識別・展開・更新・再構築、解析ツール | `roms/` |
 | PananaのUI・設計・実装状況・固有拡張 | `integrations/panana/` |
 | AI向けの検索経路 | `skill-draft/SKILL.md` |

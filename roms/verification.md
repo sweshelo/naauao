@@ -154,3 +154,26 @@ python3 roms/tools/armdis.py /tmp/oahu-merged/exefs/code.bin 004A261C 73
 ```
 
 `ctr.py verify` の既存実装は表示された `FAIL` / `ERRORS` も確認する（終了コードだけでは失敗を検出できない）。同梱 `gsarc.py` のコマンドは `list` / `catalog` / `unpack` で、旧 Panana の `replace` コマンドとは別物である。
+
+## 6. lanai (RPG FREE!) の初回解析 (2026-10-10)
+
+入力の識別値・版は [lanai.md](lanai.md)。`ctr.py verify` は Base / Update とも `ALL OK`。今回同梱ツールに加えた対応と、照合に使った根拠:
+
+| 項目 | 方法 | 結果 |
+|---|---|---|
+| アーカイブ version 10 | `gsarc.py` (ヘッダー 0x18 に対応) で全 224 個のルートのアーカイブを展開 | エントリ 12,599 個を展開できた |
+| GS テーブルの新形式 | `gstable.py` で全エントリを解析 | 4,317 個が表として読め、再配置・欄の名前が一致 |
+| コンテンツの番号 | master の Contents の行 r とアーカイブの `contents{r:04}.cro` | 127 行すべて一致 |
+| CRR | `.crr/contents0038.crr` に `SHA-256(CRO 先頭 0x80)` があるか | Update の CRR にはある、Base の CRR にはない |
+| スタミナ | MapStage +0x3D とクイズの正解 | 2 問で一致、1 問は○×問題と矛盾しない |
+| コード入力 | `lanaicode.py dec A4J8Y13ML7TAWWE1` / `enc 0 49 0 1.17.0` | チェック一致・版 1.17.0・行 49。エンコードで同じ 16 文字に戻る。乱数 2000 件の往復も一致 |
+
+エミュレータ・実機での動作確認はしていない。関数の意味の多くはコードの読み取りによる ([lanai の確度の目安](../lanai/README.md#確度の目安))。
+
+```sh
+python3 roms/tools/ctr.py merge /path/to/free-base.cia /path/to/free-update.cia /tmp/lanai-merged
+python3 roms/tools/gsarc.py catalog /tmp/lanai-merged/romfs
+python3 roms/tools/gstable.py info <展開したエントリ>
+python3 roms/tools/lanaicode.py dec A4J8Y13ML7TAWWE1
+python3 roms/tools/armdis.py /tmp/lanai-merged/exefs/code.bin 001B53D4 300
+```

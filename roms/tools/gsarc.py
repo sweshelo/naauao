@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""GS RomFS root archives of oahu (version 7; same 28-byte entry layout as RPG2's version 5).
+"""GS RomFS root archives of oahu (version 7; same 28-byte entry layout as RPG2's version 5)
+and lanai / RPG Free (version 10: 0x18-byte header, entry count at +0x10, same 28-byte entries).
 
 usage:
   gsarc.py list <archive>                     # entries (hash/type/comp/size/raw/name)
@@ -27,9 +28,12 @@ def lz10(src):
 
 def parse(data):
     ver, h, n = struct.unpack_from('<III', data, 0)
+    base = 12
+    if ver == 10:  # lanai (RPG Free): 0x18-byte header, entry count at +0x10
+        n = u32(data, 0x10); base = 0x18
     ents = []
     for i in range(n):
-        hh, typ, size, off, comp, unk, raw = struct.unpack_from('<7I', data, 12 + i * 28)
+        hh, typ, size, off, comp, unk, raw = struct.unpack_from('<7I', data, base + i * 28)
         ents.append(dict(index=i, hash=hh, type=typ, size=size, offset=off, comp=comp, unk=unk, raw=raw))
     return ver, h, ents
 
@@ -43,7 +47,7 @@ def unpack(data, e):
                 return None, b''
             name = names[0]
             return name, z.read(name)
-    if e['comp'] == 6: return None, lz10(blob)
+    if e['comp'] == 6: return None, lz10(blob) if blob else b''
     return None, blob
 
 def name_only(data, e):
