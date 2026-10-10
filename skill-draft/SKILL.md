@@ -1,13 +1,13 @@
 ---
 name: naauao-docs
-description: 電波人間のRPG2 (kahara, 1.1.0) とRPG3 (oahu, Update v4096) のROM解析仕様を必要な範囲だけ検索する。マップ、イベント、戦闘、アイテム、装備、音、ストーリー、GS形式、ROM展開、MODの制約の確認に使う。
+description: 電波人間のRPG2 (kahara, 1.1.0)、RPG3 (oahu, Update v4096)、RPG FREE! (lanai, Update v17408) のROM解析仕様を必要な範囲だけ検索する。マップ、イベント、戦闘、アイテム、装備、音、ストーリー、GS形式、ROM展開、MODの制約、FREE!のコンテンツ・チェックイン・コード入力・スタミナの確認に使う。
 ---
 
 # naauao の検索ルーティング
 
 ## 最初に決めること
 
-1. 作品と版を特定する。RPG2 = `kahara` / TitleVersion 1040、RPG3 = `oahu` / Base v0 + Update v4096。ファイル名の版ではなくTMDを確認する。未指定なら依頼・入力から特定し、別作品の値を補完に使わない。
+1. 作品と版を特定する。RPG2 = `kahara` / TitleVersion 1040、RPG3 = `oahu` / Base v0 + Update v4096、RPG FREE! = `lanai` / Base v0 + Update v17408。ファイル名の版ではなくTMDを確認する。未指定なら依頼・入力から特定し、別作品の値を補完に使わない。
 2. ゲーム仕様・個別データ・ROM操作・Panana実装のどれが必要かを決める。
 3. 下表から1〜2文書を選び、`rg -n '^#{1,4} ' <file>` で見出しを取り、該当節だけ読む。大きな表を全文ロードしない。
 
@@ -32,6 +32,20 @@ description: 電波人間のRPG2 (kahara, 1.1.0) とRPG3 (oahu, Update v4096) �
 | マップ追加 / コード制約 | [kahara/new-map.md](../kahara/new-map.md)、[kahara/code.md](../kahara/code.md) | [oahu/master-readers.md](../oahu/master-readers.md)（表の読み手） |
 | 個別ID・名称・データ一覧 | [kahara/reference/README.md](../kahara/reference/README.md) | Kaharaの表を代用しない |
 | PananaのUI・実装履歴・独自拡張 | [integrations/panana/README.md](../integrations/panana/README.md) | 同左。ゲーム仕様を調べるだけなら読まない |
+
+## Lanai (RPG FREE!) のルーティング
+
+FREE! は表・メッセージ・アーカイブの形式が RPG2 / RPG3 と違う。Kahara / Oahu の表で補わない。
+
+| 話題 | 文書 |
+|---|---|
+| 入口・版の識別・展開 | [lanai/README.md](../lanai/README.md)、[roms/lanai.md](../roms/lanai.md) |
+| アーカイブ v10 / GS テーブルの新形式 / メッセージのタグ / master の一覧 | [lanai/analysis.md](../lanai/analysis.md) |
+| コンテンツ (ステージ・シナリオ) / CRO・CRR / MapStage | [lanai/contents.md](../lanai/contents.md) |
+| スタミナ | [lanai/stamina.md](../lanai/stamina.md) |
+| チェックイン / サーバーとの通信 / 配信の表 / オフラインモード | [lanai/checkin.md](../lanai/checkin.md) |
+| コード入力 / サポートのコード | [lanai/codes.md](../lanai/codes.md) |
+| モンスターの表とモデル | [lanai/monsters.md](../lanai/monsters.md) |
 
 ## 検索例
 

@@ -67,3 +67,14 @@ ZIPには元の名前が入る。同じ名前のエントリハッシュが両�
 | 別メッセージ差し込み | `0x0002 0x0026 ID 0x0000` | `0x0002 0x002A ID 0x0000` |
 
 kahara のパディング、検索関数、ID範囲、本文と読みの違いは [kahara/messages.md](../kahara/messages.md)。oahu のID範囲とタグの確認状況は [oahu/analysis.md](../oahu/analysis.md)。kaharaで解析済みの検索規則を、未確認のoahuへそのまま適用しない。
+
+## lanai (RPG FREE!) の違い
+
+lanai（Base v0 + Update v17408）は同じエンジンの系統だが、次の点が上の形式と違う。詳しくは [lanai/analysis.md](../lanai/analysis.md)。
+
+| 項目 | kahara / oahu | lanai |
+|---|---|---|
+| GS アーカイブ | ヘッダー 0x0C（version 5 / 7） | ヘッダー 0x18（version 10、エントリ数は +0x10）。28 バイトのエントリは同じ |
+| GS テーブル | ヘッダーの後ろにデータ（開始は +0x10 に記録、0x40 / 0x50 など） | 0x40 のヘッダー + 文字列領域・行 ID・欄の名前・再配置表 |
+| メッセージ | GMSG（`.gsmb`）、ID 範囲 | GMSG はない。表の文字列（UTF-16）を「表 + 行 ID」で引く |
+| タグ | `0x0002 …`（差し込み）、ルビは単独の制御文字 | `0x0001, コード, 引数の数, 引数…`。ルビは 0x38 / 0x39 / 0x3A |
