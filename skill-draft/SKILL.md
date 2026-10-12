@@ -45,7 +45,9 @@ FREE! は表・メッセージ・アーカイブの形式が RPG2 / RPG3 と違�
 | スタミナ | [lanai/stamina.md](../lanai/stamina.md) |
 | チェックイン / サーバーとの通信 / 配信の表 / オフラインモード | [lanai/checkin.md](../lanai/checkin.md) |
 | コード入力 / サポートのコード | [lanai/codes.md](../lanai/codes.md) |
-| モンスターの表とモデル | [lanai/monsters.md](../lanai/monsters.md) |
+| モンスターのパラメータ・耐性・変身・AI・見た目とモデル | [lanai/monsters.md](../lanai/monsters.md) |
+| マップ / 区画 / タイルのモデル / MapGroup・EventObject | [lanai/map.md](../lanai/map.md) |
+| メッセージの性格ごとの出し分け | [lanai/messages.md](../lanai/messages.md) |
 
 ## 検索例
 

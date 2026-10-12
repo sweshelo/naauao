@@ -9,7 +9,9 @@
 | スタミナの消費と回復 | [stamina.md](stamina.md) |
 | チェックイン・サーバーとの通信・配信の表・サービス終了後のオフラインモード | [checkin.md](checkin.md) |
 | コード入力 (16 文字の形式・種類・サポート用コード) | [codes.md](codes.md) |
-| モンスターの表とモデル (移植のための整理) | [monsters.md](monsters.md) |
+| モンスター: パラメータ・耐性・変身・AI・見た目とモデル | [monsters.md](monsters.md) |
+| マップ: マップ DB・マップ表・区画・タイルのモデル・MapGroup と EventObject | [map.md](map.md) |
+| メッセージの性格ごとの出し分け | [messages.md](messages.md) |
 
 [ROM 識別・展開](../roms/lanai.md) / [共通形式](../common/formats.md) / [RPG3 (oahu)](../oahu/README.md)
 
