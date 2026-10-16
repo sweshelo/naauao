@@ -23,6 +23,7 @@ description: 電波人間のRPG2 (kahara, 1.1.0)、RPG3 (oahu, Update v4096)、R
 | アイテム / 装備 / 店 | [kahara/items.md](../kahara/items.md)、[kahara/item-effects.md](../kahara/item-effects.md)、[kahara/shops.md](../kahara/shops.md) | [oahu/analysis.md](../oahu/analysis.md) §6、[oahu/shops.md](../oahu/shops.md) |
 | 戦闘 / AI / 状態 / アクション | [kahara/battle.md](../kahara/battle.md) | [oahu/actions.md](../oahu/actions.md) |
 | 演出 / モーション | [kahara/action-performance.md](../kahara/action-performance.md)、[kahara/monster-motion.md](../kahara/monster-motion.md) | [oahu/map-models.md](../oahu/map-models.md)（マップモデル） |
+| モデルの作品間の比較・移植 (3 作品) | [common/models.md](../common/models.md) | 同左 |
 | マップ / 区画 / モデル | [kahara/map.md](../kahara/map.md) | [oahu/map.md](../oahu/map.md)、[oahu/map-models.md](../oahu/map-models.md) |
 | イベント / 宝箱 / 条件 / スクリプト | [kahara/events.md](../kahara/events.md)、[kahara/event-list.md](../kahara/event-list.md) | [oahu/events.md](../oahu/events.md) |
 | 敵出現 / BGM / SE | [kahara/encounters.md](../kahara/encounters.md) | [oahu/events.md](../oahu/events.md)、[oahu/sound.md](../oahu/sound.md) |
@@ -46,6 +47,7 @@ FREE! は表・メッセージ・アーカイブの形式が RPG2 / RPG3 と違�
 | チェックイン / サーバーとの通信 / 配信の表 / オフラインモード | [lanai/checkin.md](../lanai/checkin.md) |
 | コード入力 / サポートのコード | [lanai/codes.md](../lanai/codes.md) |
 | モンスターの表とモデル | [lanai/monsters.md](../lanai/monsters.md) |
+| アイテムの表・説明文・モデル | [lanai/items.md](../lanai/items.md) |
 
 ## 検索例
 

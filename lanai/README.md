@@ -10,6 +10,7 @@
 | チェックイン・サーバーとの通信・配信の表・サービス終了後のオフラインモード | [checkin.md](checkin.md) |
 | コード入力 (16 文字の形式・種類・サポート用コード) | [codes.md](codes.md) |
 | モンスターの表とモデル (移植のための整理) | [monsters.md](monsters.md) |
+| アイテムの表 (ItemData・ItemDataCore)・説明文・モデルと入手演出 | [items.md](items.md) |
 
 [ROM 識別・展開](../roms/lanai.md) / [共通形式](../common/formats.md) / [RPG3 (oahu)](../oahu/README.md)
 

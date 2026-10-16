@@ -5,6 +5,7 @@
 | 調べたいこと | 文書 |
 |---|---|
 | GSアーカイブ・GSテーブル・GMSGの形式と作品間の差 | [formats.md](formats.md) |
+| モンスター・アイテムのモデルの 3 作品の比較 (H3D の版、モーションの接頭辞、デザインの欄、移植) | [models.md](models.md) |
 | 資料の再編、訂正根拠、残った疑義 | [reorganization.md](reorganization.md) |
 | CIAの識別、展開、更新データの適用 | [../roms/README.md](../roms/README.md) |
 
