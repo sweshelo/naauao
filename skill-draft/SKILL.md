@@ -22,7 +22,7 @@ description: 電波人間のRPG2 (kahara, 1.1.0)、RPG3 (oahu, Update v4096)、R
 | GSアーカイブ / GSテーブル / GMSG | [common/formats.md](../common/formats.md)、[kahara/romfs.md](../kahara/romfs.md) | [oahu/analysis.md](../oahu/analysis.md) §4–6 |
 | アイテム / 装備 / 店 | [kahara/items.md](../kahara/items.md)、[kahara/item-effects.md](../kahara/item-effects.md)、[kahara/shops.md](../kahara/shops.md) | [oahu/analysis.md](../oahu/analysis.md) §6、[oahu/shops.md](../oahu/shops.md) |
 | 戦闘 / AI / 状態 / アクション | [kahara/battle.md](../kahara/battle.md) | [oahu/actions.md](../oahu/actions.md) |
-| 演出 / モーション | [kahara/action-performance.md](../kahara/action-performance.md)、[kahara/monster-motion.md](../kahara/monster-motion.md) | [oahu/map-models.md](../oahu/map-models.md)（マップモデル） |
+| 演出 / モーション | [kahara/action-performance.md](../kahara/action-performance.md)、[kahara/monster-motion.md](../kahara/monster-motion.md) | [oahu/actions.md](../oahu/actions.md) §5（演出の進行・カメラ）、[oahu/map-models.md](../oahu/map-models.md)（マップモデル） |
 | モデルの作品間の比較・移植 (3 作品) | [common/models.md](../common/models.md) | 同左 |
 | マップ / 区画 / モデル | [kahara/map.md](../kahara/map.md) | [oahu/map.md](../oahu/map.md)、[oahu/map-models.md](../oahu/map-models.md) |
 | イベント / 宝箱 / 条件 / スクリプト | [kahara/events.md](../kahara/events.md)、[kahara/event-list.md](../kahara/event-list.md) | [oahu/events.md](../oahu/events.md) |
