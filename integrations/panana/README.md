@@ -11,6 +11,7 @@
 | Kahara PNMP拡張・code.ips実装 | [new-map.md](new-map.md) |
 | 初期のブラウザエディタ設計（履歴） | [map-editor-design.md](map-editor-design.md) |
 | RPG3対応・表示・音・ストーリーの実装記録 | [oahu.md](oahu.md) |
+| RPG3のデータで書けるスクリプト（設計案、#90） | [oahu-scripts.md](oahu-scripts.md) |
 | RPG3対応前の両作品対応案（履歴） | [panana-compat.md](panana-compat.md) |
 
 解析仕様: [kahara](../../kahara/README.md) / [oahu](../../oahu/README.md)。サブモジュールとして使う場合は、親リポジトリの参照パスも新配置に合わせる必要がある。旧ルートのパスを仕様の正本として残さない。
