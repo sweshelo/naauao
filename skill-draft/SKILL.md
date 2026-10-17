@@ -45,6 +45,7 @@ FREE! は表・メッセージ・アーカイブの形式が RPG2 / RPG3 と違�
 | コンテンツ (ステージ・シナリオ) / CRO・CRR / MapStage | [lanai/contents.md](../lanai/contents.md) |
 | スタミナ | [lanai/stamina.md](../lanai/stamina.md) |
 | チェックイン / サーバーとの通信 / 配信の表 / オフラインモード | [lanai/checkin.md](../lanai/checkin.md) |
+| サードパーティのサーバー / MOD / Worker / ROM にないステージの配信 | [lanai/private-server.md](../lanai/private-server.md) |
 | コード入力 / サポートのコード | [lanai/codes.md](../lanai/codes.md) |
 | モンスターのパラメータ・耐性・変身・AI・見た目とモデル | [lanai/monsters.md](../lanai/monsters.md) |
 | マップ / 区画 / タイルのモデル / MapGroup・EventObject | [lanai/map.md](../lanai/map.md) |
