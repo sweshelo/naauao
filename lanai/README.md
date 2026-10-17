@@ -8,6 +8,7 @@
 | コンテンツ (シナリオ・ステージ)・CRO と CRR・MapStage | [contents.md](contents.md) |
 | スタミナの消費と回復 | [stamina.md](stamina.md) |
 | チェックイン・サーバーとの通信・配信の表・サービス終了後のオフラインモード | [checkin.md](checkin.md) |
+| サードパーティのサーバーの案 (応答の要約・MOD・Cloudflare Worker・ROM にないステージの配信) | [private-server.md](private-server.md) |
 | コード入力 (16 文字の形式・種類・サポート用コード) | [codes.md](codes.md) |
 | モンスター: パラメータ・耐性・変身・AI・見た目とモデル | [monsters.md](monsters.md) |
 | マップ: マップ DB・マップ表・区画・タイルのモデル・MapGroup と EventObject | [map.md](map.md) |
