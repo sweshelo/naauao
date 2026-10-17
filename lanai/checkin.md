@@ -250,7 +250,7 @@ master `2135000A` の `boss.bin` (表の名前 `Boss`、4 行 × 0x10、読み�
 | 0x80000002 | `…/FGONLYT/checkin.dat` | `FGONLYT` | 2 | 0 / 0 |
 
 - +0xC / +0xD は間隔 (時間) と回数と推定。`FGONLYT` は前面のときだけ動かす作業 (foreground only) と推定。作業は `FUN_0043BEB8` (URL と名前を写す) と `FUN_0043C5A0` (作業を作る) で登録する。
-- 作業 0x80000001 (`resource.dat`) はチェックインの日でもそうでない日でも動かす (§2.1)。中身と読み手は未解析 (`FUN_002D99C4` が `FUN_0040CBAC` を包む。呼び出しは `FUN_0019D700`・`FUN_002FE1D0`・`FUN_002FE584`)。
+- 作業 0x80000001 (`resource.dat`) はチェックインの日でもそうでない日でも動かす (§2.1)。`FUN_002D99C4` が `FUN_0040CBAC` を包む (呼び出しは `FUN_0019D700`・`FUN_002FE1D0`・`FUN_002FE584`)。読んだ中身は、版が新しければ `FUN_00448C24` が拡張データの `ext:/arc/` にアーカイブとして書き込む ([サードパーティのサーバー §4.3](private-server.md#43-resourcedat-と拡張データのアーカイブ-確定一部推定))。
 
 ### 8.2 checkin.dat の読み込み (`FUN_0040C93C` → `FUN_0040CBAC`)
 1. nn::boss で NsData の一覧を取り、番号が Boss の行 +8 (= 2) のものを選ぶ。
