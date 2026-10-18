@@ -14,6 +14,7 @@
 | マップ: マップ DB・マップ表・区画・タイルのモデル・MapGroup と EventObject | [map.md](map.md) |
 | メッセージの性格ごとの出し分け | [messages.md](messages.md) |
 | アイテムの表 (ItemData・ItemDataCore)・説明文・モデルと入手演出 | [items.md](items.md) |
+| 店 (Shop・ShopItem)・「店の人」(動作の型 0x32) と店の対応 | [shops.md](shops.md) |
 
 [ROM 識別・展開](../roms/lanai.md) / [共通形式](../common/formats.md) / [RPG3 (oahu)](../oahu/README.md)
 
