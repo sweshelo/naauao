@@ -13,5 +13,6 @@
 | RPG3対応・表示・音・ストーリーの実装記録 | [oahu.md](oahu.md) |
 | RPG3のデータで書けるスクリプト（設計案、#90） | [oahu-scripts.md](oahu-scripts.md) |
 | RPG3対応前の両作品対応案（履歴） | [panana-compat.md](panana-compat.md) |
+| lanai の重要オブジェクト (ボス戦・ゴールの宝箱・クリアのワープ) の修正方針 | [lanai-key-objects.md](lanai-key-objects.md) |
 
 解析仕様: [kahara](../../kahara/README.md) / [oahu](../../oahu/README.md)。サブモジュールとして使う場合は、親リポジトリの参照パスも新配置に合わせる必要がある。旧ルートのパスを仕様の正本として残さない。
