@@ -49,6 +49,7 @@ FREE! は表・メッセージ・アーカイブの形式が RPG2 / RPG3 と違�
 | コード入力 / サポートのコード | [lanai/codes.md](../lanai/codes.md) |
 | モンスターのパラメータ・耐性・変身・AI・見た目とモデル | [lanai/monsters.md](../lanai/monsters.md) |
 | マップ / 区画 / タイルのモデル / MapGroup・EventObject | [lanai/map.md](../lanai/map.md) |
+| ボス戦 / ゴールの宝箱 / クリアのワープ (動作の型 0C / 2E / 31) | [lanai/key-objects.md](../lanai/key-objects.md) |
 | メッセージの性格ごとの出し分け | [lanai/messages.md](../lanai/messages.md) |
 | アイテムの表・説明文・モデル | [lanai/items.md](../lanai/items.md) |
 
