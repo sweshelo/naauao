@@ -52,6 +52,7 @@ FREE! は表・メッセージ・アーカイブの形式が RPG2 / RPG3 と違�
 | ボス戦 / ゴールの宝箱 / クリアのワープ (動作の型 0C / 2E / 31) | [lanai/key-objects.md](../lanai/key-objects.md) |
 | メッセージの性格ごとの出し分け | [lanai/messages.md](../lanai/messages.md) |
 | アイテムの表・説明文・モデル | [lanai/items.md](../lanai/items.md) |
+| 装備の効果 (EquipInfo・種類 → ConditionData・合算) | [lanai/equipment.md](../lanai/equipment.md) |
 | 店 (Shop・ShopItem)・店の人 | [lanai/shops.md](../lanai/shops.md) |
 
 ## 検索例

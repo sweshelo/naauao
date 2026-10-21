@@ -17,7 +17,7 @@
 | PreviewParameter | `3B630000` / `C2725000` (`previewParameter.bin`) | 509 × 0x24 | 別の置き場 `0x004FE800` (`FUN_001F25C0` で読み込む) | 試着・プレビューの大きさと位置と推定 | 推定 |
 | ColorData (名前なし LZ) | `2135000A` / `270F3800` | 39 × 0xC (`name`) | | 色の名前 (なし・脱色・レア・くろ・こいくろ …) | 推定 (ItemData +0x08 の値と名前の対応) |
 | UseItemInfo | `2135000A` / `D7894800` | 140 × 0x8 | +0xBB8 | 道具の効果 (種類 0x1x / 0x02 / 0x37) | 推定 |
-| EquipInfo × 6 (`equipInfo_neck/hand/foot/back/cloth/face`) | `2135000A` | 265 / 294 / 206 / 347 / 365 / 256 × 0x3C | +0xBE0〜+0xCA8 | 装備の性能 (種類 0x8x〜0xDx) | 推定 |
+| EquipInfo × 6 (`equipInfo_neck/hand/foot/back/cloth/face`) | `2135000A` | 265 / 294 / 206 / 347 / 365 / 256 × 0x3C | +0xBE0〜+0xCA8 | 装備の性能 (種類 0x8x〜0xDx)。欄と効果は [equipment.md](equipment.md) | 確定 |
 | InteriorInfo / ExteriorInfo | `2135000A` | 346 / 310 × 0x1C | +0xD48 / +0xD70 | 家具 (0x6x) / 庭 (0x5x) | 推定 |
 | PlantInfo | `2135000A` | 141 × 0x4C | +0xD20 | 植物 (0x34〜0x36)。+0x08 = 育った植物のアイテム ID (`FUN_001EBFA4`) | 推定 |
 | FishData / FishingRod / FishingHook | `2135000A` | 101 × 0x30 / 37 × 0x14 / 34 × 0x4 | +0x14F0 / +0x1540 / +0x1518 | 魚 (0x43) / さお (0x41) / エサ (0x42) | 推定 |
