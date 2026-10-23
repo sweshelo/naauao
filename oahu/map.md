@@ -157,7 +157,7 @@ RPG2 の [map.md](../kahara/map.md) / [events.md](../kahara/events.md) / [event-
 - モデル (`FUN_00313628`): `mapParts[セルのタイル (= 種類 + 1)] + 8 + タイルセット × 0x20 + 文字 × 4` のハッシュ。タイルセット = mapData[0]、アーカイブ = mapResource[mapData[1]] の +0x00。
 - mapParts は **67 行 × 0x20C** = `{u32 a, u32 b, 16 タイルセット × 8 文字 × u32, u32 末尾}` (RPG2 は 48 × 0x18C、12 タイルセット)。
 - モデルのエントリはアーカイブ (例 `0AB60000`、`07E40000`) の **種別 8** = 0x180 バイトのヘッダー + BCH。ヘッダーの +0x54〜 は UTF-16 のパス (`rom:/cg/model/map/map_parts/bgpt_15_green/bgpt_15_green_01.bch`)、+0x3C = 0x180 (BCH の位置)、+0x40 = BCH のサイズ。
-- mapResource (34 × 0x24): +0x00 タイルのモデルのアーカイブ、+0x04 テクスチャのアーカイブ、+0x08 そのテクスチャのエントリ (種別 2、`bg_ground_01` など)、+0x0C 空のモデル (モデルのアーカイブの種別 8、`bgpt_01_caveA_sky`)、+0x10 戦闘の背景 (アーカイブ `52120000` の種別 8、`btmp_01_caveA`)、+0x14 土台のモデル (モデルのアーカイブ、`bgpt_01_caveA_base`)。
+- mapResource (34 × 0x24): +0x00 タイルのモデルのアーカイブ、+0x04 テクスチャのアーカイブ、+0x08 そのテクスチャのエントリ (種別 2、`bg_ground_01` など)、+0x0C 空のモデル (モデルのアーカイブの種別 8、`bgpt_01_caveA_sky`)、+0x10 戦闘の背景 (アーカイブ `52120000` の種別 8、`btmp_01_caveA`。どの行が使われるかは [音 §3.5](sound.md#35-戦闘の背景-確定))、+0x14 土台のモデル (モデルのアーカイブ、`bgpt_01_caveA_base`)。
 - mapObject (510 × 0x38): +0x00 アーカイブ、+0x04 モデルのエントリ (種別 2 の BCH)。
 
 ## 5. EventObject
