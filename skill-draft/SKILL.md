@@ -26,7 +26,7 @@ description: 電波人間のRPG2 (kahara, 1.1.0)、RPG3 (oahu, Update v4096)、R
 | モデルの作品間の比較・移植 (3 作品) | [common/models.md](../common/models.md) | 同左 |
 | マップ / 区画 / モデル | [kahara/map.md](../kahara/map.md) | [oahu/map.md](../oahu/map.md)、[oahu/map-models.md](../oahu/map-models.md) |
 | イベント / 宝箱 / 条件 / スクリプト | [kahara/events.md](../kahara/events.md)、[kahara/event-list.md](../kahara/event-list.md) | [oahu/events.md](../oahu/events.md) |
-| 敵出現 / BGM / SE | [kahara/encounters.md](../kahara/encounters.md) | [oahu/events.md](../oahu/events.md)、[oahu/sound.md](../oahu/sound.md) |
+| 敵出現 / BGM / SE / 戦闘の背景 | [kahara/encounters.md](../kahara/encounters.md) | [oahu/events.md](../oahu/events.md)、[oahu/sound.md](../oahu/sound.md) §3.5 |
 | ワールドマップ / ワープ / 泉 | [kahara/worldmap.md](../kahara/worldmap.md)、[kahara/field.md](../kahara/field.md) | [oahu/map.md](../oahu/map.md) |
 | セーブ / QR / ほこら | [kahara/save.md](../kahara/save.md)、[kahara/shrine.md](../kahara/shrine.md) | [oahu/story.md](../oahu/story.md) |
 | 物語 / ナビ / 段階 | — | [oahu/story.md](../oahu/story.md)、[oahu/reference/story-stages.md](../oahu/reference/story-stages.md) |
@@ -48,6 +48,7 @@ FREE! は表・メッセージ・アーカイブの形式が RPG2 / RPG3 と違�
 | サードパーティのサーバー / MOD / Worker / ROM にないステージの配信 | [lanai/private-server.md](../lanai/private-server.md) |
 | コード入力 / サポートのコード | [lanai/codes.md](../lanai/codes.md) |
 | モンスターのパラメータ・耐性・変身・AI・見た目とモデル | [lanai/monsters.md](../lanai/monsters.md) |
+| 戦闘の背景と BGM / SoundData / マップの音 | [lanai/battle-field.md](../lanai/battle-field.md) |
 | マップ / 区画 / タイルのモデル / MapGroup・EventObject | [lanai/map.md](../lanai/map.md) |
 | ボス戦 / ゴールの宝箱 / クリアのワープ (動作の型 0C / 2E / 31) | [lanai/key-objects.md](../lanai/key-objects.md) |
 | メッセージの性格ごとの出し分け | [lanai/messages.md](../lanai/messages.md) |
