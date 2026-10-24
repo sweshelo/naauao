@@ -4,6 +4,7 @@
 
 | 目的 | 文書 |
 |---|---|
+| 初代の入力 ROM と展開 | [honolulu.md](honolulu.md) |
 | RPG2 の入力 ROM と展開 | [kahara.md](kahara.md) |
 | RPG3 Base / Update の識別と展開 | [oahu.md](oahu.md) |
 | RPG3 の差分選択、マージ、CIA 再構築 | [oahu-update.md](oahu-update.md) |

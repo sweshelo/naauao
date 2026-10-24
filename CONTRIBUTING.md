@@ -4,7 +4,8 @@
 
 | 内容 | 保存先 |
 |---|---|
-| 両作品で確認した形式、調査規則 | `common/` |
+| 複数作品で確認した形式、調査規則 | `common/` |
+| 初代のゲーム仕様・個別データ | `honolulu/` |
 | RPG2のゲーム仕様・個別データ | `kahara/`、`kahara/reference/` |
 | RPG3のゲーム仕様・個別データ | `oahu/`、`oahu/reference/` |
 | RPG FREE!のゲーム仕様・個別データ | `lanai/` |

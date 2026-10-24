@@ -1,13 +1,13 @@
 ---
 name: naauao-docs
-description: 電波人間のRPG2 (kahara, 1.1.0)、RPG3 (oahu, Update v4096)、RPG FREE! (lanai, Update v17408) のROM解析仕様を必要な範囲だけ検索する。マップ、イベント、戦闘、アイテム、装備、音、ストーリー、GS形式、ROM展開、MODの制約、FREE!のコンテンツ・チェックイン・コード入力・スタミナの確認に使う。
+description: 電波人間のRPG (honolulu, Base 1.0.0)、RPG2 (kahara, 1.1.0)、RPG3 (oahu, Update v4096)、RPG FREE! (lanai, Update v17408) のROM解析仕様を必要な範囲だけ検索する。マップ、イベント、戦闘、アイテム、装備、音、ストーリー、GS形式、ROM展開、MODの制約、FREE!のコンテンツ・チェックイン・コード入力・スタミナの確認に使う。
 ---
 
 # naauao の検索ルーティング
 
 ## 最初に決めること
 
-1. 作品と版を特定する。RPG2 = `kahara` / TitleVersion 1040、RPG3 = `oahu` / Base v0 + Update v4096、RPG FREE! = `lanai` / Base v0 + Update v17408。ファイル名の版ではなくTMDを確認する。未指定なら依頼・入力から特定し、別作品の値を補完に使わない。
+1. 作品と版を特定する。RPG (初代) = `honolulu` / Base TitleVersion 1024、RPG2 = `kahara` / TitleVersion 1040、RPG3 = `oahu` / Base v0 + Update v4096、RPG FREE! = `lanai` / Base v0 + Update v17408。ファイル名の版ではなくTMDを確認する。未指定なら依頼・入力から特定し、別作品の値を補完に使わない。
 2. ゲーム仕様・個別データ・ROM操作・Panana実装のどれが必要かを決める。
 3. 下表から1〜2文書を選び、`rg -n '^#{1,4} ' <file>` で見出しを取り、該当節だけ読む。大きな表を全文ロードしない。
 
@@ -33,6 +33,17 @@ description: 電波人間のRPG2 (kahara, 1.1.0)、RPG3 (oahu, Update v4096)、R
 | マップ追加 / コード制約 | [kahara/new-map.md](../kahara/new-map.md)、[kahara/code.md](../kahara/code.md) | [oahu/master-readers.md](../oahu/master-readers.md)（表の読み手） |
 | 個別ID・名称・データ一覧 | [kahara/reference/README.md](../kahara/reference/README.md) | Kaharaの表を代用しない |
 | PananaのUI・実装履歴・独自拡張 | [integrations/panana/README.md](../integrations/panana/README.md) | 同左。ゲーム仕様を調べるだけなら読まない |
+
+## Honolulu (初代) のルーティング
+
+初代は RPG2 と同じ入れ物 (GS アーカイブ v5・GS テーブル・GMSG) だが、表の行サイズ・行数・欄が違う。master のルート名まで RPG2 と同じ `56562135` なので、タイトル ID か ExHeader の名前で作品を判定する。
+
+| 話題 | 文書 |
+|---|---|
+| 入口・版の識別・展開 | [honolulu/README.md](../honolulu/README.md)、[roms/honolulu.md](../roms/honolulu.md) |
+| RomFS のアーカイブ / master の表 / マップ / メッセージ / 島と施設 | [honolulu/analysis.md](../honolulu/analysis.md) |
+| アイテム (モデルがない) / 装備 / ふく | [honolulu/items.md](../honolulu/items.md) |
+| 店 (1 軒・段階ごとの品揃え) | [honolulu/shops.md](../honolulu/shops.md) |
 
 ## Lanai (RPG FREE!) のルーティング
 

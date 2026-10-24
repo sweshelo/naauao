@@ -1,15 +1,16 @@
 # naauao — 電波人間のRPG 解析資料
 
-『電波人間のRPG2』（内部名 `kahara`）、『電波人間のRPG3』（`oahu`）、『電波人間のRPG FREE!』（`lanai`）のファイル形式、ゲームの処理、MODの制約をまとめる。特定のエディタを使わずに仕様を調べられる資料を目指す。
+『電波人間のRPG』（内部名 `honolulu`）、『電波人間のRPG2』（`kahara`）、『電波人間のRPG3』（`oahu`）、『電波人間のRPG FREE!』（`lanai`）のファイル形式、ゲームの処理、MODの制約をまとめる。特定のエディタを使わずに仕様を調べられる資料を目指す。
 
 ## 最初に作品と版を選ぶ
 
 | 対象 | 基準とするデータ | 入口 |
 |---|---|---|
+| RPG (初代) / honolulu | Title ID `0004000000077E00`、TitleVersion 1024（1.0.0） | [Honolulu の索引](honolulu/README.md) |
 | RPG2 / kahara | Title ID `00040000000A7900`、TitleVersion 1040（1.1.0） | [Kahara の索引](kahara/README.md) |
 | RPG3 / oahu | Base `00040000000EF000` v0 + Update `0004000E000EF000` v4096 | [Oahu の索引](oahu/README.md) |
 | RPG FREE! / lanai | Base `0004000000125D00` v0 + Update `0004000E00125D00` v17408 | [Lanai の索引](lanai/README.md) |
-| 両作品の形式 | 共通ヘッダーと作品間の相違。行のフィールドまで共通とは限らない | [共通仕様](common/README.md) |
+| 作品間の形式 | 共通ヘッダーと作品間の相違。行のフィールドまで共通とは限らない | [共通仕様](common/README.md) |
 | ROM の識別・展開・再構築 | CIA、ExeFS、RomFS、Base / Update の扱い | [ROM とツール](roms/README.md) |
 | Panana 固有の設計・実装記録 | UI、実装計画、独自パッチとの接続 | [Panana 連携資料](integrations/panana/README.md) |
 
