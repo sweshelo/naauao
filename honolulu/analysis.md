@@ -26,7 +26,7 @@
 | `2713402F` | effectData (379 × 0x28)、directData (530 × 0x12)、monsterData (92 × 0x2C) | エフェクト・演出・モンスターの見た目 |
 | `470D2848` | CGFX 152 | モンスターのモデル・テクスチャ (monsterData +0x04 / +0x08 のハッシュがここのエントリ) |
 | `8756A407` | CGFX 397 | エフェクト (RPG2 と同じ役割と推定) |
-| `A90C8038` | マップ DB `A2C14C00`、csvMap、darc、ダンジョンの階の定義 ("261" 形式 × 18) | マップ (§4、[map.md](map.md)) |
+| `A90C8038` | マップ DB `A2C14C00`、csvMap、タイルの部品名 (`63165400`)、darc、ダンジョンの階の定義 ("261" 形式 × 18) | マップ (§4、[map.md](map.md)) |
 | `46910AB6`・`832DA6D7`・`62D28C8A`・`EAE2C0F2`・`A813D747`・`AC6F0948`・`CF71F752`・`84EDE99F` | t8 のエントリ (25〜34 個) | mapResource 行 1〜8 の先頭が指すタイルのモデルのアーカイブ |
 | `469B3DC6` | CGFX 9 | マップのテクスチャ (RPG2 と同じ役割と推定) |
 | `15BE1AD4`・`3A309010`・`FB501D1A` | CGFX | mapObject の行が指すアーカイブ (置物・オブジェクトのモデル) |
@@ -84,11 +84,11 @@ master のポインタは `*0x31F65C`。表は 0x1C バイトの保持体に入�
 | 23〜27 | dungeonBoss / dungeonData / dungeonEnv / dungeonObject / floorData | | 2 × 1 / 18 × 0x18 / 9 × 0x14 / 10 × 0x14 / 27 × 4 | dungeonData: +0x10 名前、+0x12 説明 (推奨レベル) のメッセージ ID。行 1〜11 が 11 のダンジョン |
 | 30 | itemGroup | ItemGroup | 186 × 0x24 | 宝箱の中身 (品 × 8、キーで引く。[map.md](map.md#5-宝箱の中身-itemgroup-master-エントリ-30186--0x24保持体-master-0x380)) |
 | 31 | mapChara | MapChara | 111 × 0x30 | |
-| 33 | mapData | MapData | 15 × 0xC | |
+| 33 | mapData | MapData | 15 × 0xC | +0x00 タイルセット、+0x06 mapResource の行 ([map.md §3.3](map.md#33-タイルのモデル)) |
 | 35 | mapObject | MapObject | 68 × 0x24 | +0x00 アーカイブ、+0x04 モデル (ハッシュ) |
-| 36 | mapParts | | 48 × 0x114 | |
-| 37 | mapResource | MapResource | 9 × 0x14 | +0x00 タイルのモデルのアーカイブ (§2) |
-| 38 | designedMap | DesignedMap | 83 × 0x20 | |
+| 36 | mapParts | | 48 × 0x114 | 通路・部屋の部品。タイルセット 8 × 変種 8 のモデル ([map.md §3.3](map.md#33-タイルのモデル)) |
+| 37 | mapResource | MapResource | 9 × 0x14 | +0x00 タイルのモデルのアーカイブ (§2)、+0x04 テクスチャ (`469B3DC6`) |
+| 38 | designedMap | DesignedMap | 83 × 0x20 | 作り込みの部屋 (`AD853AFD` のモデル) と置く物 ([map.md §3.3](map.md#33-タイルのモデル)) |
 | 39〜41 | menuList / menuItem / menuAction | | 115 × 0x28 / 917 × 0x34 / 81 × 0x14 | メニューの構成 |
 | 42〜44 | skillData / skillGroup / skillGroupRare | | 152 × 0x28 / 46 × 0x14 / 45 × 4 | アンテナの特技 ([monsters.md](monsters.md#4-skilldata-master-エントリ-42152--0x28)) |
 | 45 | monsterFixGroup | MonsterFixGroup | 24 × 0x16 | 固定の敵の組 (ボス戦) と推定 ([monsters.md](monsters.md#52-monsterfixgroup-master-エントリ-4524--0x16)) |
