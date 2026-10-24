@@ -52,5 +52,6 @@
 ## 4. 入手元 (未解析)
 
 - 店: [shops.md](shops.md) の shopItemData から引ける (確定)。
-- 宝箱・ドロップ: itemGroup (master エントリ 30、186 × 0x24) が候補だが、欄は未解析。モンスターのドロップは monsterBattleParameter のどこかと推定 (未確認)。
+- 宝箱: itemGroup (master エントリ 30、186 × 0x24) の行が 1 つの宝箱の中身 (品 × 最大 8 と個数)。行はキーで引き、キーはダンジョンの階の定義ファイルにある ([map.md §5](map.md#5-宝箱の中身-itemgroup-master-エントリ-30186--0x24保持体-master-0x380))。どの宝箱がどの階にあるかは未解析。
+- ドロップ: monsterBattleParameter の 2 枠 (w1 bit23-31、w2 bit3-11) と率の段階 ([monsters.md §2](monsters.md#2-monsterbattleparameter-master-エントリ-48111--0x34))。
 - 「〜のもと」(いかだ・ふね・クルーザー・へや・パソコン・ミュージアム) と オーブ・ちかい系は +0x14 = 0x14 の行で、値段が 0。イベントで手に入る品と推定。

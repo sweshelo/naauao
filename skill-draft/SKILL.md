@@ -41,9 +41,11 @@ description: 電波人間のRPG (honolulu, Base 1.0.0)、RPG2 (kahara, 1.1.0)、
 | 話題 | 文書 |
 |---|---|
 | 入口・版の識別・展開 | [honolulu/README.md](../honolulu/README.md)、[roms/honolulu.md](../roms/honolulu.md) |
-| RomFS のアーカイブ / master の表 / マップ / メッセージ / 島と施設 | [honolulu/analysis.md](../honolulu/analysis.md) |
+| RomFS のアーカイブ / master の表と保持体 / メッセージ / 島と施設 / 進み具合 | [honolulu/analysis.md](../honolulu/analysis.md) |
 | アイテム (モデルがない) / 装備 / ふく | [honolulu/items.md](../honolulu/items.md) |
 | 店 (1 軒・段階ごとの品揃え) | [honolulu/shops.md](../honolulu/shops.md) |
+| モンスターの能力・ワザ・特技・群れ | [honolulu/monsters.md](../honolulu/monsters.md) |
+| マップ DB・区画・階の定義・宝箱 | [honolulu/map.md](../honolulu/map.md) |
 
 ## Lanai (RPG FREE!) のルーティング
 
