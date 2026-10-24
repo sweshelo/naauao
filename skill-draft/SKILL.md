@@ -46,6 +46,7 @@ description: 電波人間のRPG (honolulu, Base 1.0.0)、RPG2 (kahara, 1.1.0)、
 | 店 (1 軒・段階ごとの品揃え) | [honolulu/shops.md](../honolulu/shops.md) |
 | モンスターの能力・ワザ・特技・群れ | [honolulu/monsters.md](../honolulu/monsters.md) |
 | マップ DB・区画・階の定義・宝箱 | [honolulu/map.md](../honolulu/map.md) |
+| ワールドマップ (船着場の島選び・PierData) | [honolulu/worldmap.md](../honolulu/worldmap.md) |
 
 ## Lanai (RPG FREE!) のルーティング
 

@@ -8,6 +8,7 @@
 | itemData・装備・ふく・モデルがないこと | [items.md](items.md) |
 | 店 (1 軒・段階ごとの品揃え)・shopItemGroup / shopItemData | [shops.md](shops.md) |
 | モンスターの能力 (ビット詰め)・ワザ・特技・群れ | [monsters.md](monsters.md) |
+| ワールドマップ (船着場の島選び)・PierData (島のダンジョン・アイコン・位置・船の段階) | [worldmap.md](worldmap.md) |
 | マップ DB と区画 (1 マップ 2 区画)・階の定義ファイル ("261"、出口・宝箱・群れの配置)・宝箱 (itemGroup) | [map.md](map.md) |
 
 初代は RPG2 (kahara) と同じ入れ物 (GS アーカイブ v5・GS テーブル・GMSG) を使うが、表の行サイズ・行数・欄は違う。RPG2 の表の定義を本作に当てない。
