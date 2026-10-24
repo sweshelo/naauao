@@ -6,9 +6,11 @@ usage:
   honolulu.py groups    <master_dir> <2713402F_dir>      # monsterGroup / monsterFixGroup
   honolulu.py chests    <master_dir>                      # itemGroup
   honolulu.py maps      <code.bin> <A90C8038_dir>         # マップ → 区画 2 つの大きさ
+  honolulu.py floors    <master_dir> <A90C8038_dir> [エントリ番号]  # ダンジョンの階の定義 ("261")
 
 <master_dir> などは gsarc.py unpack の出力先。メッセージは master の *_JP.gsmb から引く。
 欄の位置は honolulu/monsters.md・map.md の表と同じ (根拠の関数はそちら)。
+"261" の記録の読み方は FUN_0025E0EC / FUN_002A66DC と同じ (map.md §4)。
 """
 import glob, os, struct, sys
 
@@ -19,6 +21,9 @@ import gsmb  # noqa: E402
 def u16(b, o): return struct.unpack_from('<H', b, o)[0]
 def u32(b, o): return struct.unpack_from('<I', b, o)[0]
 def bits(w, lo, n): return (w >> lo) & ((1 << n) - 1)
+
+
+def s16(b, o): return struct.unpack_from('<h', b, o)[0]
 
 
 def table(d, name):
@@ -95,9 +100,69 @@ def cmd_maps(code, mapdir):
         print(f'{k:2} {a:08X} {db.get(a, "?"):>5} B  {c:08X} {db.get(c, "?"):>5} B')
 
 
+# "261" の記録: 0x64 の頭 + 9 つの配列 (u32 件数 + 要素)。要素の大きさは FUN_0025E0EC の読み飛ばしと同じ
+FLOOR_ARRAYS = [('出口', 20), ('人物', 12), ('特別な宝箱', 12), ('宝箱', 12), ('配列4', 12),
+                ('配列5', 6), ('別の部屋', 8), ('群れ', 12), ('配列8', 4)]
+
+
+def parse_floors(b):
+    """"261" ファイルを [(頭 0x64 B, [配列ごとの要素の bytes の list] × 9)] にする。"""
+    if b[:4] != b'261\0':
+        raise ValueError('not a "261" file')
+    o, recs = 8, []
+    for _ in range(u32(b, 4)):
+        head, arrs = b[o:o + 0x64], []
+        o += 0x64
+        for _, size in FLOOR_ARRAYS:
+            n = u32(b, o)
+            arrs.append([b[o + 4 + k * size:o + 4 + (k + 1) * size] for k in range(n)])
+            o += 4 + n * size
+        recs.append((head, arrs))
+    if o != len(b):
+        raise ValueError(f'trailing bytes at 0x{o:X}')
+    return recs
+
+
+def keyed(d, name):
+    """追加領域 (+0x20) の {キー: 行}。"""
+    b = open(glob.glob(os.path.join(d, f'*_{name}.bin'))[0], 'rb').read()
+    e = u32(b, 0x20)
+    return {u32(b, e + 8 * i): u32(b, e + 8 * i + 4) for i in range(u32(b, 0))} if e else {}
+
+
+def cmd_floors(master, mapdir, only=None):
+    msg = messages(master)
+    ig, mg, mc = keyed(master, 'itemGroup'), keyed(master, 'monsterGroup'), keyed(master, 'mapChara')
+    csv = open(glob.glob(os.path.join(mapdir, '*_csvMap.bin'))[0], 'rb').read()
+    maps = {u32(csv, u32(csv, 0x10) + 4 * i): i for i in range(u32(csv, 0))}
+    dd = table(master, 'dungeonData')
+    owner = {}
+    for i, r in enumerate(dd):
+        owner.setdefault(u32(r, 4), []).append(f'{i} {msg(u16(r, 0x10))}')
+    pos = lambda x, y: '(乱数)' if x == -9999 else f'({x},{y})'
+    key = lambda t, v, p: '-' if v in (0, 0xFFFFFFFF) else f'{p}{t[v]}' if v in t else f'{v:08X}'
+    for path in sorted(glob.glob(os.path.join(mapdir, '*_bin'))):
+        num, h = os.path.basename(path).split('_')[:2]
+        b = open(path, 'rb').read()
+        if b[:4] != b'261\0' or (only and int(only) != int(num)):
+            continue
+        print(f'== {num} {h} dungeonData: {"; ".join(owner.get(int(h, 16), ["なし"]))}')
+        ids = {u32(r[0], 0): i for i, r in enumerate(parse_floors(b))}
+        for i, (hd, a) in enumerate(parse_floors(b)):
+            m = u32(hd, 4)
+            print(f'  記録 {i} id {u32(hd, 0):08X} 階 {s16(hd, 0x18)} マップ {maps.get(m, "生成") if m else "生成"}'
+                  f' 群れ {key(mg, u32(hd, 8), "mg")} 宝箱 {key(ig, u32(hd, 0xC), "ig")} 大きさ {hd[0x2B]}')
+            for e in a[0]:
+                print(f'    出口 {u32(e, 0):08X} → 記録 {ids.get(u32(e, 4), "?")} {pos(s16(e, 0x10), s16(e, 0x12))} {e[0xC:0x10].hex(" ")}')
+            for t, n in ((a[1], '人物'), (a[2], '特別な宝箱'), (a[3], '宝箱'), (a[7], '群れ')):
+                for e in t:
+                    k = key(mc, u32(e, 0), 'mc') if n == '人物' else key(mg, u32(e, 0), 'mg') if n == '群れ' else key(ig, u32(e, 0), 'ig')
+                    print(f'    {n} {k} {pos(s16(e, 8), s16(e, 10))} {e[4:8].hex(" ")}')
+
+
 if __name__ == '__main__':
     cmd, *args = sys.argv[1:] or ['-h']
-    f = {'monsters': cmd_monsters, 'groups': cmd_groups, 'chests': cmd_chests, 'maps': cmd_maps}.get(cmd)
+    f = {'monsters': cmd_monsters, 'groups': cmd_groups, 'chests': cmd_chests, 'maps': cmd_maps, 'floors': cmd_floors}.get(cmd)
     if not f:
         print(__doc__); sys.exit(1)
     f(*args)

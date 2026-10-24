@@ -23,7 +23,7 @@
 | [tools/gstable.py](tools/gstable.py) | RPG FREE! (lanai) 形式の GS テーブルの一覧・行の表示・メッセージ (タグつき) の表示 |
 | [tools/lanaicode.py](tools/lanaicode.py) | RPG FREE! のコード入力 (16 文字) のデコード・エンコード |
 | [tools/gsmb.py](tools/gsmb.py) | GSMB メッセージの参照 |
-| [tools/honolulu.py](tools/honolulu.py) | 初代の monsterBattleParameter・群れ・宝箱 (itemGroup)・マップの区画の表示 |
+| [tools/honolulu.py](tools/honolulu.py) | 初代の monsterBattleParameter・群れ・宝箱 (itemGroup)・マップの区画・ダンジョンの階の定義 ("261") の表示 |
 | [tools/armdis.py](tools/armdis.py) | ARM モードの code.bin を base 0x100000 として逆アセンブル |
 | [tools/testmod.py](tools/testmod.py) | RPG3 のアイテム名変更の試料を手元のダンプから生成 |
 
