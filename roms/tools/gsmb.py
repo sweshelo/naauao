@@ -7,11 +7,16 @@ def load(path):
     magic = d[:4]; size, first, last, kind, step, tbl, base = struct.unpack_from('<7I', d, 4)
     n = 0 if last == 0xFFFFFFFF else (last - first) // step + 1
     msgs = {}
-    for i in range(n):
-        o = base + struct.unpack_from('<I', d, tbl + i * 4)[0]
-        e = o
-        while e + 1 < len(d) and d[e:e + 2] != b'\0\0': e += 2
-        msgs[first + i * step] = d[o:e]
+    # The first u16 is the kind code (may be 0); after it, 0x0001 takes 1 argument word and 0x0002 (insert) 3, which
+    # may be 0. The body ends at the next 0x0000 or at the next body's start (some *_IN files pad between bodies).
+    starts = [base + struct.unpack_from('<I', d, tbl + i * 4)[0] for i in range(n)]
+    bounds = sorted(set(starts)) + [len(d)]
+    for i, o in enumerate(starts):
+        limit = next(x for x in bounds if x > o)
+        e = min(o + 2, limit)
+        while e + 1 < limit and d[e:e + 2] != b'\0\0':
+            e += {1: 4, 2: 8}.get(struct.unpack_from('<H', d, e)[0], 2)
+        msgs[first + i * step] = d[o:min(e, limit)]
     return dict(magic=magic, size=size, first=first, last=last, kind=kind, step=step), msgs
 
 def text(raw):
