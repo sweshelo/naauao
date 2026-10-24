@@ -81,7 +81,7 @@ master のポインタは `*0x31F65C`。表は 0x1C バイトの保持体に入�
 | # | エントリ | 表の名前 (ヘッダー) | 行 × 行サイズ | 分かっていること |
 |---|---|---|---|---|
 | 22 | animData | — | 77 × 0xC | |
-| 23〜27 | dungeonBoss / dungeonData / dungeonEnv / dungeonObject / floorData | | 2 × 1 / 18 × 0x18 / 9 × 0x14 / 10 × 0x14 / 27 × 4 | dungeonData: +0x10 名前、+0x12 説明 (推奨レベル) のメッセージ ID。行 1〜11 が 11 のダンジョン |
+| 23〜27 | dungeonBoss / dungeonData / dungeonEnv / dungeonObject / floorData | | 2 × 1 / 18 × 0x18 / 9 × 0x14 / 10 × 0x14 / 27 × 4 | dungeonData: +0x10 名前、+0x12 説明 (推奨レベル)、+0x14 入るときの副題のメッセージ ID ([worldmap.md §4.6](worldmap.md#46-dungeondata-の残りの欄とカメラ))。行 1〜11 が 11 のダンジョン |
 | 30 | itemGroup | ItemGroup | 186 × 0x24 | 宝箱の中身 (品 × 8、キーで引く。[map.md](map.md#5-宝箱の中身-itemgroup-master-エントリ-30186--0x24保持体-master-0x380)) |
 | 31 | mapChara | MapChara | 111 × 0x30 | |
 | 33 | mapData | MapData | 15 × 0xC | +0x00 タイルセット、+0x06 mapResource の行 ([map.md §3.3](map.md#33-タイルのモデル)) |
