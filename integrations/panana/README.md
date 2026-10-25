@@ -9,6 +9,7 @@
 | Kaharaイベント一覧UI | [event-list.md](event-list.md) |
 | Kahara独自イベント0x30/0x31・PNSW | [event-mods.md](event-mods.md) |
 | Kahara PNMP拡張・code.ips実装 | [new-map.md](new-map.md) |
+| 他作品のBGMをKaharaへ移植 (sound.bcsar・bcstm) | [bgm-port.md](bgm-port.md) |
 | 初期のブラウザエディタ設計（履歴） | [map-editor-design.md](map-editor-design.md) |
 | RPG3対応・表示・音・ストーリーの実装記録 | [oahu.md](oahu.md) |
 | RPG3のデータで書けるスクリプト（設計案、#90） | [oahu-scripts.md](oahu-scripts.md) |
