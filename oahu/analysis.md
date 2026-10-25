@@ -80,7 +80,7 @@ RPG2 の `56562135` に当たる。GS テーブル (type 9 / 0) 92 個、GMSG 3 
 - ダンジョン・町ごとに 2 エントリのアーカイブ (`d10_EventObject.bin` + `d10_StaticEvent.bin` など) が 82 組ある。接頭辞: d10〜d90、e01〜e03、f20〜f92、h01、i01〜i24、k01〜k03、m10〜m90、s11〜s70、w01。
 - EventObject は **0x58 バイト** (RPG2 は 0x50)。StaticEvent は 4 バイト × n。
 - マップ DB (`B68E0000` / `A2C14C00`)、マップ表 (`B68E0000` / `5405E800`)、区画と EventObject の欄は [map.md](map.md)。
-- ワールドマップ: master の `W01_ground.bin` (type 0) と `worldmapParts` / `worldmapPort`。
+- ワールドマップ: master の `W01_ground.bin` (type 0) と `worldmapParts` / `worldmapPort`。読み方は [worldmap.md](worldmap.md)。
 
 ## 5. メッセージ (GMSG)
 形式は RPG2 と同じ ([共通 GMSG 形式](../common/formats.md#gmsg-メッセージ): ヘッダー、ID 範囲、オフセット表、種別コード 1 文字 + 本文 + 0x0000)。違いは ID の振り方とタグ番号。

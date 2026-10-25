@@ -179,7 +179,7 @@ RPG2 の [map.md](../kahara/map.md) / [events.md](../kahara/events.md) / [event-
 - マップ表に行を足したときの動作 (新しいマップ)。
 
 ## 8. ワールドマップ (W01)
-- マップ表の行 `W01` の区画は形が違う (タイルの区画 200,088 B は 20 の倍数でない、区画 3 は 4,864 B)。RPG2 と同じく別の仕組み ([worldmap.md](../kahara/worldmap.md)) と推定。
+- マップ表の行 `W01` の区画は使われない。ゲームは code.bin 0x556D54 の別の表 (9 区画) と master の `W01_ground.bin` を読む。RPG2 と同じ仕組み。詳細は [worldmap.md](worldmap.md)。
 
 ## 9. 置物・宝箱・キャラのモデル
 
