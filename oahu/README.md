@@ -7,7 +7,8 @@
 | 全体・アーカイブ・master・メッセージ・テーブル差分 | [analysis.md](analysis.md) |
 | actionData・系統・変身 | [actions.md](actions.md) |
 | ShopItem・Shop・支払い | [shops.md](shops.md) |
-| マップDB・区画・mapData・W01 | [map.md](map.md) |
+| マップDB・区画・mapData | [map.md](map.md) |
+| ワールドマップ W01: 区画の表・地形・入口・エンカウントの範囲 | [worldmap.md](worldmap.md) |
 | EventObject・宝箱・敵・スクリプト | [events.md](events.md) |
 | 配置オブジェクト・扉・電波人間モデル | [map-models.md](map-models.md) |
 | BGM・SE・再生関数と使用箇所 | [sound.md](sound.md) |
