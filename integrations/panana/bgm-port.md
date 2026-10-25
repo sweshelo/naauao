@@ -5,7 +5,7 @@
 
 ## 1. 書き出すもの
 
-- `romfs/sound/stream/<名前>.bcstm`: 移植元のストリームを CSTM 2.1 に直したもの。2.2 (RPG3・FREE!) は stream info の後ろの 12 B (region の欄) を track の表 (1 本) に置き換え、channel の表の直後に track (音量 0x7F・パン 0x40・全チャンネルの番号) を挟む。2.0 (初代) は 2.1 と並びが同じなのでそのまま。
+- `romfs/sound/stream/<名前>.bcstm`: 移植元のストリームを CSTM 2.1 に直したもの。2.2 (RPG3・FREE!) は stream info の後ろの 12 B (region の欄) を track の表 (1 本) に置き換え、channel の表の直後に track (音量 0x7F・パン 0x40・+3 = 1・全チャンネルの番号。RPG2 の BGM_TITLE と同じ 20 B) を挟む。2.0 (初代) は 2.1 と並びが同じなのでそのまま。
 - `romfs/sound/sound.bcsar`: 音 430 以降に、移植した曲のストリームの音を足したもの。要素は RPG2 の音 0 (`BGM_TITLE`) の写しで、ファイル・音量 (移植元の音の値)・名前・確保するチャンネル数だけを変える。ファイルの表には外部ファイルの要素 (`stream/<名前>.bcstm`) を足す。STRG は文字列表の末尾に名前を足し、名前の検索木は変えない。
 - 名前は `BGM_<作品>_<元の名前から BGM_ を除いたもの>` (例: RPG3 の `BGM_BATTLE_1` → `BGM_OAHU_BATTLE_1`)。作品は `HONOLULU` / `OAHU` / `LANAI`。既存の名前と重なれば `_2` などを付ける。
 
