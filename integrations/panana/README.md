@@ -10,6 +10,7 @@
 | Kahara独自イベント0x30/0x31・PNSW | [event-mods.md](event-mods.md) |
 | Kahara PNMP拡張・code.ips実装 | [new-map.md](new-map.md) |
 | 他作品のBGMをKaharaへ移植 (sound.bcsar・bcstm) | [bgm-port.md](bgm-port.md) |
+| Kaharaのレベルステルス (平均Lvが高いと敵が気づかない。RPG3の挙動) | [level-stealth.md](level-stealth.md) |
 | 初期のブラウザエディタ設計（履歴） | [map-editor-design.md](map-editor-design.md) |
 | RPG3対応・表示・音・ストーリーの実装記録 | [oahu.md](oahu.md) |
 | RPG3のデータで書けるスクリプト（設計案、#90） | [oahu-scripts.md](oahu-scripts.md) |
