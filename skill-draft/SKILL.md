@@ -26,7 +26,7 @@ description: 電波人間のRPG (honolulu, Base 1.0.0)、RPG2 (kahara, 1.1.0)、
 | モデルの作品間の比較・移植 (3 作品) | [common/models.md](../common/models.md) | 同左 |
 | マップ / 区画 / モデル | [kahara/map.md](../kahara/map.md) | [oahu/map.md](../oahu/map.md)、[oahu/map-models.md](../oahu/map-models.md) |
 | イベント / 宝箱 / 条件 / スクリプト | [kahara/events.md](../kahara/events.md)、[kahara/event-list.md](../kahara/event-list.md) | [oahu/events.md](../oahu/events.md) |
-| 敵出現 / BGM / SE / 戦闘の背景 | [kahara/encounters.md](../kahara/encounters.md) | [oahu/events.md](../oahu/events.md)、[oahu/sound.md](../oahu/sound.md) §3.5 |
+| 敵出現 / BGM / SE / 戦闘の背景 | [kahara/encounters.md](../kahara/encounters.md)、[kahara/symbol.md](../kahara/symbol.md)（シンボルの動き・追跡・速さ） | [oahu/events.md](../oahu/events.md)、[oahu/sound.md](../oahu/sound.md) §3.5 |
 | ワールドマップ / ワープ / 泉 | [kahara/worldmap.md](../kahara/worldmap.md)、[kahara/field.md](../kahara/field.md) | [oahu/map.md](../oahu/map.md) |
 | セーブ / QR / ほこら | [kahara/save.md](../kahara/save.md)、[kahara/shrine.md](../kahara/shrine.md) | [oahu/story.md](../oahu/story.md) |
 | 物語 / ナビ / 段階 | — | [oahu/story.md](../oahu/story.md)、[oahu/reference/story-stages.md](../oahu/reference/story-stages.md) |

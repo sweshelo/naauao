@@ -19,6 +19,7 @@
 | マップ追加に関係するゲーム側の表と制約 | [new-map.md](new-map.md) |
 | ワールドマップ・座標・入口 | [worldmap.md](worldmap.md) |
 | エンカウント・BGM・固定敵 | [encounters.md](encounters.md) |
+| マップのシンボルの敵の動き・追跡・速さ | [symbol.md](symbol.md) |
 | ゲーム本来のEventObject・スクリプト | [events.md](events.md) |
 | イベントを抽出する解析手法と出現条件 | [event-list.md](event-list.md) |
 | 回復の泉・ワープ・テレポーター | [field.md](field.md) |
