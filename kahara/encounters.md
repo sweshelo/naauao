@@ -83,7 +83,7 @@ kahara v1.1.0 の RomFS を読んだ値。他作品は比較のため併記す�
 | RPG2 | 0x02020000 | 0x02010000 | あり |
 | RPG3 / FREE! | 0x02030000 | 0x02020000 | 参照が null。stream info の後ろに 12 B (u16 0x100 と null の参照) |
 
-- マップ・戦闘・ボス戦の BGM は soundData の行を 1 バイトで持ち、行 1〜255 はすべてゲームの音 (1〜34 BGM、35〜50 ME、51〜 効果音)。行を足しても (418〜) これらの欄からは指せない。他作品の BGM を足すときの扱いは [Panana の連携資料](../integrations/panana/bgm-port.md) を参照。
+- マップ・戦闘・ボス戦の BGM は soundData の行を 1 バイトで持ち、行 1〜255 はすべてゲームの音 (1〜34 BGM、35〜50 ME、51〜 効果音)。行を足しても (418〜) そのままではこれらの欄から指せない (BGM の欄は 0x80 未満しか使わないので、Panana はコードのパッチで 0x80〜0xFF を足した行に読み替える)。他作品の BGM を足すときの扱いは [Panana の連携資料](../integrations/panana/bgm-port.md) を参照。
 
 ## 5. 決まった敵との戦闘 (monsterFixGroup、確定)
 
