@@ -21,6 +21,7 @@
 | エンカウント・BGM・固定敵 | [encounters.md](encounters.md) |
 | マップのシンボルの敵の動き・追跡・速さ | [symbol.md](symbol.md) |
 | ゲーム本来のEventObject・スクリプト | [events.md](events.md) |
+| ボス戦前のイベント (範囲・主人公の動き・話者・演出の部品) | [cutscene.md](cutscene.md) |
 | イベントを抽出する解析手法と出現条件 | [event-list.md](event-list.md) |
 | 回復の泉・ワープ・テレポーター | [field.md](field.md) |
 | 精霊のほこら・呼び戻し・修正パッチ仕様 | [shrine.md](shrine.md) |
