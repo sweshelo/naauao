@@ -12,6 +12,7 @@
 | Kaharaの「ジャンプ」の行き先を足す・入口が出ていない間は外すパッチ | [jump-points.md](jump-points.md) |
 | Kahara PNMP拡張・code.ips実装 | [new-map.md](new-map.md) |
 | 他作品のBGMをKaharaへ移植 (sound.bcsar・bcstm) | [bgm-port.md](bgm-port.md) |
+| Kaharaのデバッグモード (Azahar専用。店・ストーリー・セーブ変数) | [debug-mode.md](debug-mode.md) |
 | Kaharaのレベルステルス (平均Lvが高いと敵が気づかない。RPG3の挙動) | [level-stealth.md](level-stealth.md) |
 | 初期のブラウザエディタ設計（履歴） | [map-editor-design.md](map-editor-design.md) |
 | RPG3対応・表示・音・ストーリーの実装記録 | [oahu.md](oahu.md) |
