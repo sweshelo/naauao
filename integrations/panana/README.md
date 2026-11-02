@@ -9,6 +9,7 @@
 | Kaharaイベント一覧UI | [event-list.md](event-list.md) |
 | Kahara独自イベント0x30/0x31・PNSW | [event-mods.md](event-mods.md) |
 | Kaharaワールドマップの入口の出現条件・「出現した」告知パッチ | [world-notice.md](world-notice.md) |
+| Kaharaの「ジャンプ」の行き先を足す・入口が出ていない間は外すパッチ | [jump-points.md](jump-points.md) |
 | Kahara PNMP拡張・code.ips実装 | [new-map.md](new-map.md) |
 | 他作品のBGMをKaharaへ移植 (sound.bcsar・bcstm) | [bgm-port.md](bgm-port.md) |
 | Kaharaのレベルステルス (平均Lvが高いと敵が気づかない。RPG3の挙動) | [level-stealth.md](level-stealth.md) |
