@@ -15,6 +15,7 @@
 | MonsterParameter・状態・計算式・AI・変身 | [battle.md](battle.md) |
 | アクションとエフェクトの演出 | [action-performance.md](action-performance.md) |
 | モンスターのアニメーションと表示 | [monster-motion.md](monster-motion.md) |
+| ミュージアムの項目・倒した記録・そうぐうしたばしょ | [museum.md](museum.md) |
 | マップDB・区画・モデル・宝箱 | [map.md](map.md) |
 | マップ追加に関係するゲーム側の表と制約 | [new-map.md](new-map.md) |
 | ワールドマップ・座標・入口 | [worldmap.md](worldmap.md) |
