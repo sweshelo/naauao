@@ -68,7 +68,7 @@ MapStage の +0x34〜+0x3F は、MapStageIntegration の +0x40〜+0x4B に移る
 | 0x1C | u32 | 未確認 (例 0x11〜0x19、0x15D〜、0x7D0) | |
 | 0x24 | u8 | 分類と推定 (3 = 本編、0x16 = イベント系、0x1A = 一部) | 推定 |
 | 0x38 | u16 | コンテンツ番号 | 確定 |
-| 0x3A | u16 | 1〜4 | 未確認 |
+| **0x3A** | u16 | **始まりの MapGroup** (コンテンツの `MapGroup` の行)。[§3.3](#33-ステージの始まり-最初のマップと入口) | **確定** |
 | **0x3D** | u8 | **ステージに入るのに要るスタミナ** | **確定 (§3.1)** |
 | 0x3E | u8 | 0x65 または 0 | 未確認 |
 
@@ -82,6 +82,16 @@ MapStage の +0x34〜+0x3F は、MapStageIntegration の +0x40〜+0x4B に移る
 | 1.甘い誘惑 (`80000012`) | 1 | 「10 である」(○×問題) | 0x05 = 5 (×が正解と見られる) |
 
 スタミナの回復は [stamina.md](stamina.md)。
+
+### 3.3 ステージの始まり (最初のマップと入口)
+
+アドレスは Update の code.bin。
+
+- ステージ選択から入る処理 (`@0x253308`〜) は、ステージ枠 (`FUN_002C1D2C` の 0x158 B の枠) を引いて `FUN_002E7814` を呼ぶ。`ScriptMap::ChangeMapContents` (`0x454DE0`) も同じ。
+- `FUN_002E7814` はセーブの値 0x27 / 0x28 に枠の +0x130 / +0x134 を、**0x29 (今の MapGroup、`FUN_0031EB38` が読む) に枠の +0x148** を入れ、0x2A〜0x2C を 0 にする。
+- 枠は `FUN_001D6CD4` が MapStage から作る。**枠 +0x148 = MapStage +0x3A** (`@0x1D6E40`、MapStageIntegration では +0x46)。枠 +0x130 / +0x134 は枠の初期化 (`@0x2C1BE8`) で 0 になり、MapStage からは入らない。0x27 / 0x28 が 0 のときに MapGroup の最初のマップを使う処理は**追っていない**。
+- データで照合した (ROM の 126 ステージ。MapGroup 0 の行 4 件を除く): **MapStage +0x3A の MapGroup の +0x14 / +0x18 (最初のマップのハッシュ / 地点 ID) は、126 件すべてで同じコンテンツのマップ表のマップ (ワールドマップではない) を指し、地点 ID はそのマップの区画 3 の出入口にある**。`DebugMapJump` の行 0 がある 68 件中 66 件はこれと同じ値 (違う 2 件はコンテンツ 3・69 で、デバッグ用の別の入口と推定)。
+- したがって、ステージの始まりを変えるには MapStage +0x3A (MapStageIntegration +0x46 も) と、その MapGroup の +0x14 / +0x18 を書く (推定。ゲーム内では未確認)。MapGroup の +0x14 / +0x18 はほかの場面 (グループに入るときなど) でも読む可能性がある。
 
 ### 3.2 MessageMapStage (master、135 × 0x14)
 欄 `stage_name` (+0x04)、`voice` (+0x08)、`stage_mission` (+0x0C)、`stage_exp` (+0x10)。+0x00 は 0 または 0xF。説明文の中で、表の差し込みタグ ([§2.2](analysis.md#22-メッセージ-確定)) を使ってアイテム名やモンスター名を引く (例 `[ItemData:0x800000C7:name]`)。
@@ -105,7 +115,16 @@ MapStage の +0x34〜+0x3F は、MapStageIntegration の +0x40〜+0x4B に移る
   コンテンツ 75 では、呼び先のクラスごとの数は ScriptChara 23、ScriptMap 15、ScriptMenu 9、ScriptCamera 9、ScriptSystem 8、ScriptFlag 6。本体のシンボル表が `app/lanai.crs`。
 - RPG3 ではイベントのスクリプトを本体の「動作の生成」関数が作っていた ([oahu/events.md](../oahu/events.md))。lanai ではそれが CRO に分かれたので、**新しいコンテンツのイベントは CRO を作れば足せる**見込み。
 
-### 4.2 CRR
+### 4.2 CRO の関数の表 (フック)
+
+- 127 個の CRO はどれも **indexed export が 41 個**ある。本体は `FUN_002E7E4C(状態, 番号)` (中で `0x4639CC` → nn::ro の番号でのアドレス引き) で番号の関数を取り出し、あれば呼ぶ。呼ぶ所は 46 か所で、番号は 0〜0x28。
+- `mov r0, #0; bx lr` だけの関数を「空」とすると、13〜19・33・37・39 は 127 個すべてで空でない (共通の処理)。
+- **番号 3 = 最初のイベント**。`FUN_00182324` (フィールドの場面のオブジェクトの初期化。モード `*0x4EB760 +8` が 3 か 0x1D のとき) が番号 3 を呼び、戻り値のイベントのオブジェクトを +0x0C に置く。125 個の CRO で空でない。例 コンテンツ 1: `ScriptMap::GetCurrentMapGroupID() == 1` かつ `ScriptFlag::GetScriptBitFlag(0x24)` が 0 なら `IntroCommon(0xA2B01CE4)` を基にした `D01Intro` を作る。そうでなく `GetScriptByteFlag(0x49) == 2` なら `CommonHeroMsg` を作る。どの場面で呼ぶか (マップに入るたびか) は未確認。
+- 番号 0x1F / 0x20 は EventObject の出る・消える条件の差し替え ([map.md §7.1](map.md#71-eventobject-の欄-100-b))。ほかの番号の役目は未解析。
+- **コンテンツ 99「あみだクジ（仮）」と 125「EVCK38（未定）」の CRO は、共通の番号しか持たない** (イベントのクラスなし、12 KB)。Update の `.crr/contents0099.crr` に登録されているので、CRO を作らずに「イベントのないステージ」を作るひな形に使える見込み (Panana #216 の追加の作業で使う。ゲーム内では未確認)。
+- 写した CRO は元のステージと同じフラグ (例 0x24) を読み書きする。元のステージで開始の演出を見たあとは、写しでも出ない。
+
+### 4.3 CRR
 - `.crr/contentsNNNN.crr` (マジック `CRR0`) が、対応する CRO の **先頭 0x80 バイトの SHA-256** を持つ。コンテンツ 38 で確認した。Update の CRR は Update の CRO と一致し、Base の CRR とは一致しない。
 - `.crr/` は Base に 47 個、Update に 127 個ある。Update の `.crr/` は patchList.bin に載っていないが、Update の CRO に合うのは Update の CRR だけなので、ゲームは Update 側を読んでいると判断する。読み込みの処理は未確認。
 - CRR には RSA 署名がある。署名を確認しない環境 (RO の検査を外したカスタムファームウェアなど) でなければ、作り直した CRR は通らない見込み。実機・Azahar では未確認。
