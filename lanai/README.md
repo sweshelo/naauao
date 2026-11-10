@@ -16,6 +16,7 @@
 | 重要オブジェクト: 会話のあとのボス戦・開けるとクリアの宝箱・クリアのワープ | [key-objects.md](key-objects.md) |
 | メッセージの性格ごとの出し分け | [messages.md](messages.md) |
 | アイテムの表 (ItemData・ItemDataCore)・説明文・モデルと入手演出 | [items.md](items.md) |
+| アクション (ActionData の欄・文・系統・道具の UseItemInfo +0x04・行を足す) | [actions.md](actions.md) |
 | 装備の効果 (EquipInfo・種類 → ConditionData・合算・自動のアクション) | [equipment.md](equipment.md) |
 | 店 (Shop・ShopItem)・「店の人」(動作の型 0x32) と店の対応 | [shops.md](shops.md) |
 
